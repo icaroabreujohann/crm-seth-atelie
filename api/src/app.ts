@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import { testarConexaoDb } from './config/db'
 
 import clientesRoutes from './modules/clientes/clientes.router'
+import { erroGlobal } from './middlewares/erroGlobal'
 
 dotenv.config()
 
@@ -16,6 +17,7 @@ app.use(cors())
 app.use('/clientes', clientesRoutes)
 
 
+app.use(erroGlobal)
 
 app.get('/', async (req, res) => {
      res.send('<h1>teste</h1>')
