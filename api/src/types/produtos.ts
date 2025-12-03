@@ -21,5 +21,4 @@ export interface EditarProdutoDTO {
      nome: string,
      preco: number,
      tempo_medio: string | null,
-     fotos_url: string | null
 }

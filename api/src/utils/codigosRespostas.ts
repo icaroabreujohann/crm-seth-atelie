@@ -39,10 +39,10 @@ export const CODIGOS_SUCESSO = {
      ENCOMENDA_EDITAR_SUCESS: { codigo: 2204, mensagem: 'Encomenda editada com sucesso.' },
      ENCOMENDA_EXCLUIR_SUCESS: { codigo: 2205, mensagem: 'Encomenda excluida com sucesso.' },
 
-     PRODUTO_LISTAR_SUCESS: { codigo: 2300, mensagem: 'Produto listadas com sucesso.' },
+     PRODUTO_LISTAR_SUCESS: { codigo: 2300, mensagem: 'Produto listados com sucesso.' },
      PRODUTO_EXISTE_SUCESS: { codigo: 2301, mensagem: 'O Produto já está registrado.' },
      PRODUTO_N_EXISTE_SUCESS: { codigo: 2302, mensagem: 'O Produto não existe.' },
-     PRODUTO_CRIAR_SUCESS: { codigo: 2303, mensagem: 'Produto criadp com sucesso.' },
-     PRODUTO_EDITAR_SUCESS: { codigo: 2304, mensagem: 'Produto editadp com sucesso.' },
+     PRODUTO_CRIAR_SUCESS: { codigo: 2303, mensagem: 'Produto criado com sucesso.' },
+     PRODUTO_EDITAR_SUCESS: { codigo: 2304, mensagem: 'Produto editado com sucesso.' },
      PRODUTO_EXCLUIR_SUCESS: { codigo: 2305, mensagem: 'Produto excluido com sucesso.' },
 }
