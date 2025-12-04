@@ -1,6 +1,6 @@
 import { Cliente, CriarClienteDTO, EditarClienteDTO } from '../../types/cliente'
 import { CODIGOS_ERRO } from '../../utils/codigosRespostas'
-import { verificaErroExiste } from '../../utils/verifcaErroExiste'
+import { validaRegraNegocio } from '../../validators/valida.regranegocio'
 import { ClientesRepository } from '../clientes/clientes.repository'
 
 export class ClientesService {
@@ -12,7 +12,7 @@ export class ClientesService {
 
      async listarClientePorId(id: number) {
           const cliente = await this.repository.listarPorId(id)
-          verificaErroExiste([{ condicao: !cliente, valor: id, codigoResposta: CODIGOS_ERRO.CLIENTE_N_EXISTE_ERR }])
+          validaRegraNegocio([{ condicao: !cliente, valor: id, codigoResposta: CODIGOS_ERRO.CLIENTE_N_EXISTE_ERR }])
 
           return cliente
      }
@@ -24,7 +24,7 @@ export class ClientesService {
                data.telefone ? this.repository.obterClientePorTelefone(data.telefone) : { existe: false, campo: 'telefone' }
           ])
 
-          verificaErroExiste([
+          validaRegraNegocio([
                { condicao: clienteInstagramExiste.existe, valor: clienteInstagramExiste, codigoResposta: CODIGOS_ERRO.CLIENTE_EXISTE_ERR },
                { condicao: clienteTelefoneExiste.existe, valor: clienteTelefoneExiste, codigoResposta: CODIGOS_ERRO.CLIENTE_EXISTE_ERR }
           ])
@@ -38,7 +38,7 @@ export class ClientesService {
                data.telefone ? this.repository.obterClientePorTelefone(data.telefone) : { existe: false, campo: 'Telefone', data: null }
           ])
 
-          verificaErroExiste([
+          validaRegraNegocio([
                {
                     condicao: clienteInstagramExiste.existe && clienteInstagramExiste.data?.id != id,
                     valor: data,
@@ -59,7 +59,7 @@ export class ClientesService {
                this.repository.obterClientePorId(id)
           ])
 
-          verificaErroExiste([{condicao: !clienteExisteId.existe, valor: id, codigoResposta: CODIGOS_ERRO.CLIENTE_N_EXISTE_ERR}])
+          validaRegraNegocio([{condicao: !clienteExisteId.existe, valor: id, codigoResposta: CODIGOS_ERRO.CLIENTE_N_EXISTE_ERR}])
 
           return await this.repository.excluir(id)
      }

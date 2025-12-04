@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { CODIGOS_ERRO } from '../utils/codigosRespostas'
-import { ErroCustomizado } from '../errors/erro.customizado'
+import { ErroCustomizado } from '../types/erro.customizado'
 
 const UUID_REGEX = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/
 

@@ -1,6 +1,5 @@
-import { gerenciadorMensagens } from '../utils/gerenciadorRepostas'
 import { CODIGOS_ERRO } from '../utils/codigosRespostas'
-import { ErroCustomizado } from '../errors/erro.customizado'
+import { ErroCustomizado } from '../types/erro.customizado'
 
 export function validaRequisicao<T extends Record<string, any>>(
      data: T,

@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto'
 import { CriarProdutoDTO, EditarProdutoDTO } from '../../types/produtos'
 import { CODIGOS_ERRO } from '../../utils/codigosRespostas'
-import { verificaErroExiste } from '../../utils/verifcaErroExiste'
+import { validaRegraNegocio } from '../../validators/valida.regranegocio'
 import { ProdutosRepository } from './produtos.repository'
 import { PRODUTOS_DIR } from '../../infra/upload/paths'
 import { salvarFotosProduto } from '../../infra/upload/produtos.salvarfotos'
@@ -29,7 +29,7 @@ export class ProdutosService {
 
      async listarPorId(id: number) {
           const produto = await this.repository.listarPorId(id)
-          verificaErroExiste([{ condicao: !produto, valor: 'ID Inexistente.', codigoResposta: CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR }])
+          validaRegraNegocio([{ condicao: !produto, valor: 'ID Inexistente.', codigoResposta: CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR }])
 
           return produto
      }
@@ -49,7 +49,7 @@ export class ProdutosService {
                this.repository.obterProdutoPorId(id)
           ])
 
-          verificaErroExiste([{ condicao: !produtoExiste.existe, valor: id, codigoResposta: CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR }])
+          validaRegraNegocio([{ condicao: !produtoExiste.existe, valor: id, codigoResposta: CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR }])
 
           const produtoEditado = await this.repository.editar(id, data)
           return produtoEditado
@@ -60,7 +60,7 @@ export class ProdutosService {
                this.repository.obterProdutoPorId(id),
                this.repository.obterProdutoPorCodigo(codigo)
           ])
-          verificaErroExiste([
+          validaRegraNegocio([
                { condicao: !produtoExisteId.existe, valor: id, codigoResposta: CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR },
                { condicao: !produtoExisteCodigo.existe, valor: codigo, codigoResposta: CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR }
           ])
