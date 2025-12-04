@@ -3,7 +3,7 @@ import { ProdutosService } from './produtos.services'
 import { gerenciadorMensagens } from '../../utils/gerenciadorRepostas'
 import { CODIGOS_SUCESSO } from '../../utils/codigosRespostas'
 import { CriarProdutoDTO, EditarProdutoDTO } from '../../types/produtos'
-import { validaRequisicao } from '../../validators/valida.requisicao'
+import { validaRequisicao } from '../../shared/validators/valida.requisicao'
 
 export class ProdutosController {
      private service = new ProdutosService()
@@ -13,10 +13,10 @@ export class ProdutosController {
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.PRODUTO_LISTAR_SUCESS, produtos)
      }
 
-     listarProdutoPorId = async (req: Request, res: Response) => {
-          const id: number = Number(req.params.id)
+     listarProdutoCodigo = async (req: Request, res: Response) => {
+          const codigo: string = String(req.params.codigo)
 
-          const produto = await this.service.listarPorId(id)
+          const produto = await this.service.listarPorCodigo(codigo)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.PRODUTO_LISTAR_SUCESS, produto)
      }
 
@@ -31,19 +31,18 @@ export class ProdutosController {
      }
 
      editarProduto = async (req: Request, res: Response) => {
-          const id: number = Number(req.params.id)
+          const codigo: string = String(req.params.codigo)
           const data: EditarProdutoDTO = req.body
           validaRequisicao(data, ['nome', 'preco'])
 
-          const produtoEditado = await this.service.editarProduto(id, data)
+          const produtoEditado = await this.service.editarProduto(codigo, data)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.PRODUTO_EDITAR_SUCESS, produtoEditado)
      }
 
      excluirProduto = async (req: Request, res: Response) => {
-          const id: number = Number(req.params.id)
           const codigo: string = String(req.params.codigo)
 
-          const produtoExcluido = await this.service.excluirProduto(id, codigo)
+          const produtoExcluido = await this.service.excluirProduto(codigo)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.PRODUTO_EXCLUIR_SUCESS, produtoExcluido)
      }
 }

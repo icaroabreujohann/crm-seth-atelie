@@ -1,6 +1,6 @@
 import { Cliente, CriarClienteDTO, EditarClienteDTO } from '../../types/cliente'
 import { CODIGOS_ERRO } from '../../utils/codigosRespostas'
-import { validaRegraNegocio } from '../../validators/valida.regranegocio'
+import { validaRegraNegocio } from '../../shared/validators/valida.regranegocio'
 import { ClientesRepository } from '../clientes/clientes.repository'
 
 export class ClientesService {

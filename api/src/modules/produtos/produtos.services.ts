@@ -1,11 +1,12 @@
 import { randomUUID } from 'crypto'
 import { CriarProdutoDTO, EditarProdutoDTO } from '../../types/produtos'
 import { CODIGOS_ERRO } from '../../utils/codigosRespostas'
-import { validaRegraNegocio } from '../../validators/valida.regranegocio'
+import { validaRegraNegocio } from '../../shared/validators/valida.regranegocio'
 import { ProdutosRepository } from './produtos.repository'
 import { PRODUTOS_DIR } from '../../infra/upload/paths'
 import { salvarFotosProduto } from '../../infra/upload/produtos.salvarfotos'
 import { excluirPasta } from '../../utils/filesystem/excluirPasta'
+import { assertResultadoBusca } from '../../shared/asserts/assertResultadoBusca'
 
 
 export class ProdutosService {
@@ -27,10 +28,10 @@ export class ProdutosService {
           return await this.repository.listar()
      }
 
-     async listarPorId(id: number) {
-          const produto = await this.repository.listarPorId(id)
-          validaRegraNegocio([{ condicao: !produto, valor: 'ID Inexistente.', codigoResposta: CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR }])
+     async listarPorCodigo(codigo: string) {
+          const produto = await this.repository.listarPorCodigo(codigo)
 
+          assertResultadoBusca(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
           return produto
      }
 
@@ -40,34 +41,27 @@ export class ProdutosService {
 
           await salvarFotosProduto(codigo, fotos, PRODUTOS_DIR)
 
-          const produtoCriado = await this.repository.criar({ ...data, codigo, fotos_url })
-          return produtoCriado
+          return await this.repository.criar({ ...data, codigo, fotos_url })
      }
 
-     async editarProduto(id: number, data: EditarProdutoDTO) {
-          const [produtoExiste] = await Promise.all([
-               this.repository.obterProdutoPorId(id)
-          ])
-
-          validaRegraNegocio([{ condicao: !produtoExiste.existe, valor: id, codigoResposta: CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR }])
-
-          const produtoEditado = await this.repository.editar(id, data)
-          return produtoEditado
-     }
-
-     async excluirProduto(id: number, codigo: string) {
-          const [produtoExisteId, produtoExisteCodigo] = await Promise.all([
-               this.repository.obterProdutoPorId(id),
+     async editarProduto(codigo: string, data: EditarProdutoDTO) {
+          const [produto] = await Promise.all([
                this.repository.obterProdutoPorCodigo(codigo)
           ])
-          validaRegraNegocio([
-               { condicao: !produtoExisteId.existe, valor: id, codigoResposta: CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR },
-               { condicao: !produtoExisteCodigo.existe, valor: codigo, codigoResposta: CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR }
+
+          assertResultadoBusca(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
+
+          return await this.repository.editar(produto.data.id, data)
+     }
+
+     async excluirProduto(codigo: string) {
+          const [produto] = await Promise.all([
+               this.repository.obterProdutoPorCodigo(codigo)
           ])
 
+          assertResultadoBusca(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
           await excluirPasta(PRODUTOS_DIR, codigo)
 
-          const produtoExcluido = await this.repository.excluir(id)
-          return produtoExcluido
+          return await this.repository.excluir(produto.data.id)
      }
 }

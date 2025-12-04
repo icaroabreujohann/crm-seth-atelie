@@ -1,5 +1,5 @@
-import { Verificacao } from '../types/erro.verificacao'
-import { ErroCustomizado } from '../types/erro.customizado'
+import { Verificacao } from '../../types/erro.verificacao'
+import { ErroCustomizado } from '../../types/erro.customizado'
 
 export function validaRegraNegocio(regras: Verificacao[]){
      const erro = regras.find(v => v.condicao)

@@ -7,9 +7,9 @@ const router = Router()
 const controller = new ProdutosController()
 
 router.get('/', controller.listarProdutos)
-router.get('/:id', validaIdParam, controller.listarProdutoPorId)
+router.get('/:id', validaCodigoParam, controller.listarProdutoCodigo)
 router.post('/', uploadProdutos.array('fotos'), controller.criarProduto)
-router.patch('/:id', validaIdParam, controller.editarProduto)
-router.delete('/:id/:codigo', validaIdParam, validaCodigoParam, controller.excluirProduto)
+router.patch('/:id', validaCodigoParam, controller.editarProduto)
+router.delete('/:id/:codigo', validaCodigoParam, controller.excluirProduto)
 
 export default router
