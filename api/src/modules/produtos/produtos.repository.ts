@@ -2,7 +2,6 @@ import { sql } from "../../config/db";
 import { ResultadoBusca } from "../../shared/types";
 import { resultadoEncontrado, resultadoInexistente } from '../../utils/resultadoBusca'
 import { CriarProdutoDTO, EditarProdutoDTO, Produto } from "../../types/produtos";
-import { verificaResultadoExiste } from "../../types/verifica.resultado.existe";
 import { normalizaTexto } from "../../utils/normalizaTexto";
 
 export class ProdutosRepository {
@@ -10,14 +9,14 @@ export class ProdutosRepository {
           return await sql`select * from produtos`
      }
 
-     async listarPorCodigo(codigo: string):  Promise<ResultadoBusca<Produto>> {
+     async listarPorCodigo(codigo: string): Promise<ResultadoBusca<Produto>> {
           const [produto] = await sql<Produto[]>`
                select * from produtos
                where codigo = ${codigo}
                limit 1
           `
 
-          return produto ?  resultadoEncontrado(produto) : resultadoInexistente()
+          return produto ? resultadoEncontrado(produto) : resultadoInexistente()
      }
 
      async criar(data: CriarProdutoDTO): Promise<Produto | null> {
@@ -67,18 +66,14 @@ export class ProdutosRepository {
                     select * from produtos
                     where codigo = ${codigo}
                `
-          return produto ?  resultadoEncontrado(produto) : resultadoInexistente()
+          return produto ? resultadoEncontrado(produto) : resultadoInexistente()
      }
 
-     async obterProdutoPorId(id: number): Promise<verificaResultadoExiste<Produto>> {
+     async obterProdutoPorId(id: number): Promise<ResultadoBusca<Produto>> {
           const [produto] = await sql<Produto[]>`
                     select * from produtos
                     where id = ${id}
                `
-          return {
-               existe: !!produto,
-               data: produto ?? null,
-               campo: 'Id',
-          }
+          return produto ? resultadoEncontrado(produto) : resultadoInexistente()
      }
 }

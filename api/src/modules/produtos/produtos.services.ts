@@ -1,12 +1,11 @@
 import { randomUUID } from 'crypto'
 import { CriarProdutoDTO, EditarProdutoDTO } from '../../types/produtos'
 import { CODIGOS_ERRO } from '../../utils/codigosRespostas'
-import { validaRegraNegocio } from '../../shared/validators/valida.regranegocio'
 import { ProdutosRepository } from './produtos.repository'
 import { PRODUTOS_DIR } from '../../infra/upload/paths'
 import { salvarFotosProduto } from '../../infra/upload/produtos.salvarfotos'
 import { excluirPasta } from '../../utils/filesystem/excluirPasta'
-import { assertResultadoBusca } from '../../shared/asserts/assertResultadoBusca'
+import { assertResultadoExiste } from '../../shared/asserts/assertResultadoBusca'
 
 
 export class ProdutosService {
@@ -31,7 +30,7 @@ export class ProdutosService {
      async listarPorCodigo(codigo: string) {
           const produto = await this.repository.listarPorCodigo(codigo)
 
-          assertResultadoBusca(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
+          assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
           return produto
      }
 
@@ -45,21 +44,17 @@ export class ProdutosService {
      }
 
      async editarProduto(codigo: string, data: EditarProdutoDTO) {
-          const [produto] = await Promise.all([
-               this.repository.obterProdutoPorCodigo(codigo)
-          ])
+          const produto = await this.repository.obterProdutoPorCodigo(codigo)
 
-          assertResultadoBusca(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
+          assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
 
           return await this.repository.editar(produto.data.id, data)
      }
 
      async excluirProduto(codigo: string) {
-          const [produto] = await Promise.all([
-               this.repository.obterProdutoPorCodigo(codigo)
-          ])
+          const produto = await this.repository.obterProdutoPorCodigo(codigo)
 
-          assertResultadoBusca(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
+          assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
           await excluirPasta(PRODUTOS_DIR, codigo)
 
           return await this.repository.excluir(produto.data.id)

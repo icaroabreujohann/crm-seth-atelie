@@ -1,7 +1,8 @@
 import { sql } from '../../config/db'
 import { Cliente, ClienteId, CriarClienteDTO, EditarClienteDTO } from '../../types/cliente'
-import { verificaResultadoExiste } from '../../types/verifica.resultado.existe'
 import { normalizaTexto } from '../../utils/normalizaTexto'
+import { ResultadoBusca } from "../../shared/types";
+import { resultadoEncontrado, resultadoInexistente } from '../../utils/resultadoBusca'
 
 export class ClientesRepository {
 
@@ -9,14 +10,14 @@ export class ClientesRepository {
           return await sql`select * from clientes order by id desc`
      }
 
-     async listarPorId(id: number): Promise<Cliente | null> {
+     async listarPorId(id: number): Promise<ResultadoBusca<Cliente>> {
           const [cliente] = await sql<Cliente[]>`
                select * from clientes
                where id = ${id}
                limit 1
 
                `
-          return cliente ?? null
+          return cliente ? resultadoEncontrado(cliente) : resultadoInexistente()
      }
 
      async criar(data: CriarClienteDTO): Promise<Cliente | null> {
@@ -57,40 +58,28 @@ export class ClientesRepository {
 
      //Validações
 
-     async obterClientePorInstagram(instagram: string): Promise<verificaResultadoExiste<ClienteId>> {
-          const [cliente] = await sql<ClienteId[]>`
-               select id from clientes
+     async obterClientePorInstagram(instagram: string): Promise<ResultadoBusca<Cliente>> {
+          const [cliente] = await sql<Cliente[]>`
+               select * from clientes
                where instagram = ${instagram}
           `
-          return {
-               existe: !!cliente,
-               data: cliente ?? null,
-               campo: 'Instagram',
-          }
+          return cliente ? resultadoEncontrado(cliente) : resultadoInexistente()
      }
 
-     async obterClientePorTelefone(telefone: string): Promise<verificaResultadoExiste<ClienteId>> {
-          const [cliente] = await sql<ClienteId[]>`
-               select id from clientes
+     async obterClientePorTelefone(telefone: string): Promise<ResultadoBusca<Cliente>> {
+          const [cliente] = await sql<Cliente[]>`
+               select * from clientes
                where telefone = ${telefone}
           `
-          return {
-               existe: !!cliente,
-               data: cliente ?? null,
-               campo: 'Telefone',
-          }
+          return cliente ? resultadoEncontrado(cliente) : resultadoInexistente()
      }
 
-     async obterClientePorId(id: number): Promise<verificaResultadoExiste<Cliente>> {
+     async obterClientePorId(id: number): Promise<ResultadoBusca<Cliente>> {
           const [cliente] = await sql<Cliente[]>`
                select * from clientes
                where id = ${id}
           `
 
-          return {
-               existe: !!cliente,
-               data: cliente ?? null,
-               campo: 'ID',
-          }
+          return cliente ? resultadoEncontrado(cliente) : resultadoInexistente()
      }
 }
