@@ -22,6 +22,12 @@ export const CODIGOS_ERRO = {
      PRODUTO_EDITAR_ERR: { codigo: 1303, mensagem: 'Erro ao criar produto.' },
      PRODUTO_EXCLUIR_ERR: { codigo: 1304, mensagem: 'Erro ao criar produto.' },
      PRODUTO_N_EXISTE_ERR: { codigo: 1305, mensagem: 'O produto não existe.' },
+
+     MATERIAL_LIST_ERR: { codigo: 1401, mensagem: 'Erro ao listar materiais.' },
+     MATERIAL_CRIAR_ERR: { codigo: 1402, mensagem: 'Erro ao criar material.' },
+     MATERIAL_EDITAR_ERR: { codigo: 1403, mensagem: 'Erro ao editar material.' },
+     MATERIAL_EXCLUIR_ERR: { codigo: 1404, mensagem: 'Erro ao excluir material.' },
+     MATERIAL_N_EXISTE_ERR: { codigo: 1405, mensagem: 'O material não existe.' },
 }
 export const CODIGOS_SUCESSO = {
      SUCESSO_GENERICO: { codigo: 2000, mensagem: 'Erro interno do servidor' },
@@ -46,4 +52,13 @@ export const CODIGOS_SUCESSO = {
      PRODUTO_CRIAR_SUCESS: { codigo: 2303, mensagem: 'Produto criado com sucesso.' },
      PRODUTO_EDITAR_SUCESS: { codigo: 2304, mensagem: 'Produto editado com sucesso.' },
      PRODUTO_EXCLUIR_SUCESS: { codigo: 2305, mensagem: 'Produto excluido com sucesso.' },
+
+     MATERIAL_LISTAR_SUCESS: { codigo: 2400, mensagem: 'Materiais listados com sucesso.' },
+     MATERIAL_EXISTE_SUCESS: { codigo: 2401, mensagem: 'O material já está registrado.' },
+     MATERIAL_N_EXISTE_SUCESS: { codigo: 2402, mensagem: 'O material não existe.' },
+     MATERIAL_CRIAR_SUCESS: { codigo: 2403, mensagem: 'Material criado com sucesso.' },
+     MATERIAL_EDITAR_SUCESS: { codigo: 2404, mensagem: 'Material editado com sucesso.' },
+     MATERIAL_EXCLUIR_SUCESS: { codigo: 2405, mensagem: 'Material excluído com sucesso.' },
 }
+
+
