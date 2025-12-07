@@ -1,7 +1,5 @@
 import { randomUUID } from 'crypto'
-import { CriarProdutoDTO, EditarProdutoDTO } from '../../types/produtos'
 import { CODIGOS_ERRO } from '../../utils/codigosRespostas'
-import { PRODUTOS_DIR } from '../../infra/upload/paths'
 import { assertResultadoExiste } from '../../shared/asserts/assertResultadoBusca'
 import { MateriaisRepository } from './materiais.repository'
 import { CriarMaterialDTO, EditarMaterialDTO } from '../../types/materiais'

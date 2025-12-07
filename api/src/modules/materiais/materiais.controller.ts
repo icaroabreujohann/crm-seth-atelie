@@ -22,7 +22,7 @@ export class MaterialsController {
 
      criarMaterial = async (req: Request, res: Response) => {
           const data: CriarMaterialDTO = req.body
-          validaRequisicao(data, ['nome', 'tipo', 'unidade_medida', 'preco', 'quantidade'])
+          validaRequisicao(data, ['nome', 'tipo_id', 'unidade_medida_id', 'preco', 'quantidade'])
           
           const materialCriado = await this.service.criarMaterial(data)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.MATERIAL_CRIAR_SUCESS, materialCriado)

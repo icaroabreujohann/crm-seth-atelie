@@ -2,19 +2,37 @@ import { sql } from '../../config/db'
 import { ResultadoBusca } from '../../shared/types'
 import { resultadoEncontrado, resultadoInexistente } from '../../utils/resultadoBusca'
 import { normalizaTexto } from '../../utils/normalizaTexto'
-import { CriarMaterialDTO, EditarMaterialDTO, Material } from '../../types/materiais'
+import { CriarMaterialDTO, EditarMaterialDTO, Material, MaterialCompleto } from '../../types/materiais'
 
 export class MateriaisRepository {
 
-     async listar(): Promise<Material[]> {
-          return await sql`select * from materiais order by id desc`
+     async listar(): Promise<MaterialCompleto[]> {
+          return await sql`
+               select
+                    mat.*,
+                    um.sigla as unidade_medida_sigla,
+                    mt.nome as tipo_nome
+               from materiais mat
+               join materiais_tipos mt 
+                    on mat.tipo_id = mt.id
+               join unidades_medida um 
+                    on um.id = mat.unidade_medida_id
+               order by mat.id desc
+          `
      }
 
-     async listarPorCodigo(codigo: string): Promise<ResultadoBusca<Material>> {
-          const [material] = await sql<Material[]>`
-               select * from materiais
-               where codigo = ${codigo}
-               limit 1
+     async listarPorCodigo(codigo: string): Promise<ResultadoBusca<MaterialCompleto>> {
+          const [material] = await sql<MaterialCompleto[]>`
+               select
+                    mat.*,
+                    um.sigla as unidade_medida_sigla,
+                    mt.nome as tipo_nome
+               from materiais mat
+               join materiais_tipos mt 
+                    on mat.tipo_id = mt.id
+               join unidades_medida um 
+                    on um.id = mat.unidade_medida_id
+               where mat.codigo = ${codigo}
           `
 
           return material ? resultadoEncontrado(material) : resultadoInexistente()
@@ -22,11 +40,11 @@ export class MateriaisRepository {
 
      async criar(data: CriarMaterialDTO): Promise<Material | null> {
           const [material] = await sql<Material[]>`
-               insert into materiais (nome, tipo, unidade_medida, preco, quantidade, observacoes)
+               insert into materiais (nome, tipo_id, unidade_medida_id, preco, quantidade, observacoes)
                     values (
                     ${data.nome},
-                    ${data.tipo},
-                    ${data.unidade_medida},
+                    ${data.tipo_id},
+                    ${data.unidade_medida_id},
                     ${data.preco},
                     ${data.quantidade},
                     ${normalizaTexto(data.observacoes)}
@@ -43,8 +61,8 @@ export class MateriaisRepository {
                update materiais
                set
                     nome           = coalesce(${data.nome}, nome),
-                    tipo           = coalesce(${data.tipo}, tipo),
-                    unidade_medida = coalesce(${data.unidade_medida}, unidade_medida),
+                    tipo_id           = coalesce(${data.tipo_id}, tipo_id),
+                    unidade_medida_id = coalesce(${data.unidade_medida_id}, unidade_medida_id),
                     preco          = coalesce(${data.preco}, preco),
                     quantidade     = coalesce(${data.quantidade}, quantidade),
                     observacoes    = coalesce(${normalizaTexto(data.observacoes)}, observacoes),
@@ -68,10 +86,18 @@ export class MateriaisRepository {
 
      //
 
-     async obterMaterialPorCodigo(codigo: string): Promise<ResultadoBusca<Material>> {
-          const [material] = await sql<Material[]>`
-               select * from materiais
-               where codigo = ${codigo}
+     async obterMaterialPorCodigo(codigo: string): Promise<ResultadoBusca<MaterialCompleto>> {
+          const [material] = await sql<MaterialCompleto[]>`
+               select
+                    mat.*,
+                    um.sigla as unidade_medida_sigla,
+                    mt.nome as tipo_nome
+               from materiais mat
+               join materiais_tipos mt 
+                    on mat.tipo_id = mt.id
+               join unidades_medida um 
+                    on um.id = mat.unidade_medida_id
+               where mat.codigo = ${codigo}
           `
 
           return material ? resultadoEncontrado(material) : resultadoInexistente()
@@ -79,8 +105,16 @@ export class MateriaisRepository {
 
      async obterMaterialPorId(id: number): Promise<ResultadoBusca<Material>> {
           const [material] = await sql<Material[]>`
-               select * from materiais
-               where id = ${id}
+               select
+                    mat.*,
+                    um.sigla as unidade_medida_sigla,
+                    mt.nome as tipo_nome
+               from materiais mat
+               join materiais_tipos mt 
+                    on mat.tipo_id = mt.id
+               join unidades_medida um 
+                    on um.id = mat.unidade_medida_id
+               where mat.id = ${id}
           `
 
           return material ? resultadoEncontrado(material) : resultadoInexistente()
