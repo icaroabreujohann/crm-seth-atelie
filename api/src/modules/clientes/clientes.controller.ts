@@ -3,7 +3,7 @@ import { ClientesService } from '../clientes/clientes.services'
 import { gerenciadorMensagens } from '../../utils/gerenciadorRepostas'
 import { CODIGOS_SUCESSO } from '../../utils/codigosRespostas'
 import { validaRequisicao, validaTipoDado } from '../../shared/validators/valida.requisicao'
-import { CriarClienteDTO, EditarClienteDTO } from '../../types/cliente'
+import { CriarClienteDTO, EditarClienteDTO } from './clientes.types'
 
 export class ClientesController {
      private service = new ClientesService()

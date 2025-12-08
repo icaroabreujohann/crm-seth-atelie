@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto'
-import { CriarProdutoDTO, EditarProdutoDTO } from '../../types/produtos'
+import { CriarProdutoDTO, EditarProdutoDTO } from './produtos.types'
 import { CODIGOS_ERRO } from '../../utils/codigosRespostas'
 import { ProdutosRepository } from './produtos.repository'
 import { PRODUTOS_DIR } from '../../infra/upload/paths'

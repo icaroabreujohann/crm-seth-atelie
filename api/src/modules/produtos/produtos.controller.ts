@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { ProdutosService } from './produtos.services'
 import { gerenciadorMensagens } from '../../utils/gerenciadorRepostas'
 import { CODIGOS_SUCESSO } from '../../utils/codigosRespostas'
-import { CriarProdutoDTO, EditarProdutoDTO } from '../../types/produtos'
+import { CriarProdutoDTO, EditarProdutoDTO } from './produtos.types'
 import { validaRequisicao } from '../../shared/validators/valida.requisicao'
 
 export class ProdutosController {

@@ -1,4 +1,4 @@
-import { Cliente, CriarClienteDTO, EditarClienteDTO } from '../../types/cliente'
+import { Cliente, CriarClienteDTO, EditarClienteDTO } from './clientes.types'
 import { CODIGOS_ERRO } from '../../utils/codigosRespostas'
 import { validaRegraNegocio } from '../../shared/validators/valida.regranegocio'
 import { ClientesRepository } from '../clientes/clientes.repository'

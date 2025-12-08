@@ -1,5 +1,5 @@
 import { sql } from '../../config/db'
-import { Cliente, ClienteId, CriarClienteDTO, EditarClienteDTO } from '../../types/cliente'
+import { Cliente, ClienteId, CriarClienteDTO, EditarClienteDTO } from './clientes.types'
 import { normalizaTexto } from '../../utils/normalizaTexto'
 import { ResultadoBusca } from "../../shared/types";
 import { resultadoEncontrado, resultadoInexistente } from '../../utils/resultadoBusca'

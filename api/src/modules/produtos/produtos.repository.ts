@@ -1,7 +1,7 @@
 import { sql } from "../../config/db";
 import { ResultadoBusca } from "../../shared/types";
 import { resultadoEncontrado, resultadoInexistente } from '../../utils/resultadoBusca'
-import { CriarProdutoDTO, EditarProdutoDTO, Produto } from "../../types/produtos";
+import { CriarProdutoDTO, EditarProdutoDTO, Produto } from "./produtos.types";
 import { normalizaTexto } from "../../utils/normalizaTexto";
 
 export class ProdutosRepository {

@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto'
 import { CODIGOS_ERRO } from '../../utils/codigosRespostas'
 import { assertResultadoExiste } from '../../shared/asserts/assertResultadoBusca'
 import { MateriaisRepository } from './materiais.repository'
-import { CriarMaterialDTO, EditarMaterialDTO } from '../../types/materiais'
+import { CriarMaterialDTO, EditarMaterialDTO } from './materiais.types'
 
 export class MateriaisServices {
      private repository = new MateriaisRepository()

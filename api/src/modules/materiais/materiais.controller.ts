@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { gerenciadorMensagens } from '../../utils/gerenciadorRepostas'
 import { CODIGOS_SUCESSO } from '../../utils/codigosRespostas'
-import { CriarMaterialDTO, EditarMaterialDTO } from '../../types/materiais'
+import { CriarMaterialDTO, EditarMaterialDTO } from './materiais.types'
 import { validaRequisicao } from '../../shared/validators/valida.requisicao'
 import { MateriaisServices } from './materiais.services'
 
