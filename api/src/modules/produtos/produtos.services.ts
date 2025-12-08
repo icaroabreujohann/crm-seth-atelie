@@ -36,7 +36,7 @@ export class ProdutosService {
 
      async criarProduto(data: CriarProdutoDTO, fotos: Express.Multer.File[]) {
           const codigo: string = await this.gerarCodigoProdutoUnico()
-          const fotos_url = `arquivos/produtos/${codigo}`
+          const fotos_url = `${PRODUTOS_DIR}/${codigo}`
 
           await salvarFotosProduto(codigo, fotos, PRODUTOS_DIR)
 
