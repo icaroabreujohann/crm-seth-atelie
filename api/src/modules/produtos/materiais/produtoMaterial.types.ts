@@ -18,3 +18,11 @@ export interface CriarProdutoMaterialRepoDTO {
      quantidade: number,
      preco_final: number
 }
+
+export interface EditarProdutoMaterialDTO {
+     quantidade: number
+}
+export interface EditarProdutoMaterialRepoDTO {
+     quantidade: number,
+     preco_final: number
+}

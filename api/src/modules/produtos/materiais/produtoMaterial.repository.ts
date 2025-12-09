@@ -1,10 +1,11 @@
 import { sql } from '../../../config/db'
 import { ResultadoBusca } from '../../../shared/types';
 import { resultadoEncontrado, resultadoInexistente } from '../../../utils/resultadoBusca';
-import { CriarProdutoMaterialRepoDTO, ProdutoMaterial } from './produtoMaterial.types';
+import { Produto } from '../produtos.types';
+import { CriarProdutoMaterialRepoDTO, EditarProdutoMaterialRepoDTO, ProdutoMaterial } from './produtoMaterial.types';
 
 export class ProdutoMaterialRepository {
-     async listarPorProduto(produto_id: number):Promise<ResultadoBusca<ProdutoMaterial[]>> {
+     async listarPorProduto(produto_id: number): Promise<ResultadoBusca<ProdutoMaterial[]>> {
           const materiais = await sql<ProdutoMaterial[]>`
                select
                     pm.*,
@@ -20,8 +21,7 @@ export class ProdutoMaterialRepository {
           return materiais ? resultadoEncontrado(materiais) : resultadoInexistente()
      }
 
-     async criar(data: CriarProdutoMaterialRepoDTO):Promise<ProdutoMaterial | null> {
-          console.log('data:',data)
+     async criar(data: CriarProdutoMaterialRepoDTO): Promise<ProdutoMaterial | null> {
           const [material] = await sql<ProdutoMaterial[]>`
           insert into produtos_materiais (produto_id,material_id,quantidade,preco_final)
           values (
@@ -33,5 +33,36 @@ export class ProdutoMaterialRepository {
           returning *
      `
           return material ?? null
+     }
+
+     async editar(id: number, data: EditarProdutoMaterialRepoDTO): Promise<ProdutoMaterial | null> {
+          const [material] = await sql<ProdutoMaterial[]>`
+          update produtos_materiais
+          set
+               quantidade = ${data.quantidade},
+               preco_final = ${data.preco_final}
+          where id = ${id}
+          returning *
+          `
+          return material ?? null
+     }
+
+     async excluir(id: number): Promise<ProdutoMaterial | null> {
+          const [material] = await sql<ProdutoMaterial[]>`
+               delete from produtos_materiais
+               where id = ${id}
+               returning *
+          `
+          return material ?? null
+     }
+
+     //
+
+     async obterMaterialProdutoPorId(id: number): Promise<ResultadoBusca<ProdutoMaterial>> {
+          const [material] = await sql<ProdutoMaterial[]>`
+                    select * from produtos_materiais
+                    where id = ${id}
+               `
+          return material ? resultadoEncontrado(material) : resultadoInexistente()
      }
 }
