@@ -16,19 +16,20 @@ export interface Encomenda {
 
 export interface CriarEncomendaDTO {
     cliente_id: number,
-    produto_codigo: number,
+    produto_codigo: string,
     observacoes: string | null,
     pagamento_realizado: boolean | null,
     pagamento_forma: string | null,
     finalizado: boolean | null,
-    entregue: boolean,
+    entregue: boolean | null,
     local_entrega: string | null,
     data_pedido: Date | null,
 }
 
 export interface CriarEncomendaRepoDTO {
+    codigo: string,
     cliente_id: number,
-    produto_id: number,
+    produto_id: number
     observacoes: string | null,
     pagamento_realizado: boolean | null,
     pagamento_forma: string | null,

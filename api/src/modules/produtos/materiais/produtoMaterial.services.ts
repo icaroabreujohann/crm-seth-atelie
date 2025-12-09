@@ -19,7 +19,6 @@ export class ProdutoMaterialService {
      }
 
      async adicionarMaterial(produto_codigo: string, data: CriarProdutoMaterialDTO) {
-          console.log('prod_codguuid:', produto_codigo)
           const produto = await this.repositoryProdutos.obterProdutoPorCodigo(produto_codigo)
           assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, produto_codigo)
 
