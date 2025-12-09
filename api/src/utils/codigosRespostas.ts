@@ -35,6 +35,7 @@ export const CODIGOS_ERRO = {
      PRODUTO_MATERIAL_CRIAR_ERRO: { codigo: 1503, mensagem: 'Erro ao criar produto ou material.' },
      PRODUTO_MATERIAL_EDITAR_ERRO: { codigo: 1504, mensagem: 'Erro ao editar produto ou material.' },
      PRODUTO_MATERIAL_EXCLUIR_ERRO: { codigo: 1505, mensagem: 'Erro ao excluir produto ou material.' },
+     PRODUTO_MATERIAL_N_CORRESPONDE_ERRO: { codigo: 1506, mensagem: 'O Material lançado não corresponde ao produto.' },
 
 }
 export const CODIGOS_SUCESSO = {

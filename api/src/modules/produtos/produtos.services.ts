@@ -6,10 +6,12 @@ import { PRODUTOS_DIR } from '../../infra/upload/paths'
 import { salvarFotosProduto } from '../../infra/upload/produtos.salvarfotos'
 import { excluirPasta } from '../../utils/filesystem/excluirPasta'
 import { assertResultadoExiste } from '../../shared/asserts/assertResultadoBusca'
+import { ProdutoMaterialRepository } from './materiais/produtoMaterial.repository'
 
 
 export class ProdutosService {
      private repository = new ProdutosRepository()
+     private repositoryMateriais = new ProdutoMaterialRepository()
 
      private async gerarCodigoProdutoUnico(): Promise<string> {
           let codigo = randomUUID()
@@ -32,6 +34,16 @@ export class ProdutosService {
 
           assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
           return produto
+     }
+
+     async listarCompleto(codigo: string) {
+          const produto = await this.repository.listarPorCodigo(codigo)
+          assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
+
+          const materiais = await this.repositoryMateriais.listarPorProduto(produto.data.id)
+
+          const produtoCompleto = {...produto, materiais}
+          return produtoCompleto
      }
 
      async criarProduto(data: CriarProdutoDTO, fotos: Express.Multer.File[]) {

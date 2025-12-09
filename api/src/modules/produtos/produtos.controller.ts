@@ -20,6 +20,13 @@ export class ProdutosController {
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.PRODUTO_LISTAR_SUCESS, produto)
      }
 
+     listarProdutoCompleto = async (req: Request, res: Response) => {
+          const codigo: string = String(req.params.codigo)
+
+          const produto = await this.service.listarCompleto(codigo)
+          gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.PRODUTO_LISTAR_SUCESS, produto)
+     }
+
      criarProduto = async (req: Request, res: Response) => {
           const data: CriarProdutoDTO = req.body
           validaRequisicao(data, ['nome', 'preco'])
