@@ -23,20 +23,21 @@ export interface CriarEncomendaDTO {
     finalizado: boolean | null,
     entregue: boolean | null,
     local_entrega: string | null,
-    data_pedido: Date | null,
+    data_pedido: Date,
 }
 
 export interface CriarEncomendaRepoDTO {
-    codigo: string,
     cliente_id: number,
     produto_id: number
+    codigo: string,
     observacoes: string | null,
     pagamento_realizado: boolean | null,
     pagamento_forma: string | null,
     finalizado: boolean | null,
     entregue: boolean | null,
     local_entrega: string | null,
-    data_pedido: Date | null,
+    data_pedido: Date,
+    data_prazo: Date,
 }
 
 export interface EditarEncomendaDTO {
@@ -47,4 +48,5 @@ export interface EditarEncomendaDTO {
     entregue: boolean | null,
     local_entrega: string | null,
     data_pedido: Date | null,
+    data_prazo: Date | null,
 }

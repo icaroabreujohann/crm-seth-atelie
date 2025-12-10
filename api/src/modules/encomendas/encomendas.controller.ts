@@ -8,22 +8,22 @@ export class EncomendasController {
      private services = new EncomendasServices()
 
      listar = async (req: Request, res: Response) => {
-          const encomendas = this.services.listar()
+          const encomendas = await this.services.listar()
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.ENCOMENDA_LISTAR_SUCESS, encomendas)
      }
 
      listarPorCodigo = async (req: Request, res: Response) => {
           const codigo = String(req.params.codigo)
 
-          const encomenda = this.services.listar()
+          const encomenda = await this.services.listarPorCodigo(codigo)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.ENCOMENDA_LISTAR_SUCESS, encomenda)
      }
 
      criarEncomenda = async (req: Request, res: Response) => {
           const data = req.body
 
-          validaRequisicao(data, ['cliente_id', 'produto_codigo'])
-          const encomenda = this.services.criarEncomenda(data)
+          validaRequisicao(data, ['cliente_id', 'produto_codigo','data_pedido'])
+          const encomenda = await this.services.criarEncomenda(data)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.ENCOMENDA_CRIAR_SUCESS, encomenda)
      }
 
@@ -31,14 +31,14 @@ export class EncomendasController {
           const codigo = String(req.params.codigo)
           const data = req.body
 
-          const encomenda = this.services.editarEncomenda(codigo, data)
+          const encomenda = await this.services.editarEncomenda(codigo, data)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.ENCOMENDA_EDITAR_SUCESS, encomenda)
      }
 
      excluirEncomenda = async (req: Request, res: Response) => {
           const codigo = String(req.params.codigo)
 
-          const encomenda = this.services.excluirEncomenda(codigo)
+          const encomenda = await this.services.excluirEncomenda(codigo)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.ENCOMENDA_EXCLUIR_SUCESS, encomenda)
      }
 

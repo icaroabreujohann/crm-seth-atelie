@@ -1,6 +1,6 @@
 import { sql } from '../../config/db'
 import { Cliente, ClienteId, CriarClienteDTO, EditarClienteDTO } from './clientes.types'
-import { normalizaTexto } from '../../utils/normalizaTexto'
+import { normalizaTexto } from '../../utils/normalizadores'
 import { ResultadoBusca } from "../../shared/types";
 import { resultadoEncontrado, resultadoInexistente } from '../../utils/resultadoBusca'
 

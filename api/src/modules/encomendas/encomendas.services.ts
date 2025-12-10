@@ -5,6 +5,7 @@ import { ClientesRepository } from '../clientes/clientes.repository'
 import { assertResultadoExiste } from '../../shared/asserts/assertResultadoBusca'
 import { CODIGOS_ERRO } from '../../utils/codigosRespostas'
 import { CriarEncomendaDTO, EditarEncomendaDTO } from './encomendas.types'
+import { adicionarDias } from '../../utils/adicionarDias'
 
 export class EncomendasServices {
      private repository = new EncomendasRepository()
@@ -42,21 +43,33 @@ export class EncomendasServices {
 
           const cliente = await this.repositoryClientes.listarPorId(data.cliente_id)
           assertResultadoExiste(cliente, CODIGOS_ERRO.CLIENTE_N_EXISTE_ERR, data.cliente_id)
+
+          const encomenda = {
+               ...data,
+               codigo,
+               produto_id: produto.data.id,
+               cliente_id: cliente.data.id,
+               data_prazo: adicionarDias(data.data_pedido, 20)
+          }
           
-          return this.repository.criar({...data, codigo, produto_id: produto.data.id})
+          return await this.repository.criar(encomenda)
      }
 
      async editarEncomenda(codigo: string, data: EditarEncomendaDTO){
           const encomenda = await this.repository.listarPorCodigo(codigo)
           assertResultadoExiste(encomenda, CODIGOS_ERRO.ENCOMENDA_N_EXISTE_ERR, codigo)
 
-          return this.repository.editar(encomenda.data.id, data)
+          if(data.data_pedido && !data.data_prazo) data = {...data, data_prazo: adicionarDias(data.data_pedido, 20)}
+
+          console.log('dataservices', data)
+
+          return await this.repository.editar(encomenda.data.id, data)
      }
 
      async excluirEncomenda(codigo: string) {
           const encomenda = await this.repository.listarPorCodigo(codigo)
           assertResultadoExiste(encomenda, CODIGOS_ERRO.ENCOMENDA_N_EXISTE_ERR, codigo)
 
-          return this.repository.excluir(encomenda.data.id)
+          return await this.repository.excluir(encomenda.data.id)
      }
 }

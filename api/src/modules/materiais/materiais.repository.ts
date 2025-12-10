@@ -1,7 +1,7 @@
 import { sql } from '../../config/db'
 import { ResultadoBusca } from '../../shared/types'
 import { resultadoEncontrado, resultadoInexistente } from '../../utils/resultadoBusca'
-import { normalizaTexto } from '../../utils/normalizaTexto'
+import { normalizaTexto } from '../../utils/normalizadores'
 import { CriarMaterialDTO, EditarMaterialDTO, Material, MaterialCompleto } from './materiais.types'
 
 export class MateriaisRepository {

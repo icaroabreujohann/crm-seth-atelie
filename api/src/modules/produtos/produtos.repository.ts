@@ -2,7 +2,7 @@ import { sql } from "../../config/db";
 import { ResultadoBusca } from "../../shared/types";
 import { resultadoEncontrado, resultadoInexistente } from '../../utils/resultadoBusca'
 import { CriarProdutoDTO, EditarProdutoDTO, Produto } from "./produtos.types";
-import { normalizaTexto } from "../../utils/normalizaTexto";
+import { normalizaTexto } from "../../utils/normalizadores";
 
 export class ProdutosRepository {
      async listar(): Promise<Produto[]> {

@@ -6,6 +6,8 @@ import { testarConexaoDb } from './config/db'
 import clientesRoutes from './modules/clientes/clientes.router'
 import produtosRoutes from './modules/produtos/produtos.router'
 import materiaisRoutes from './modules/materiais/materiais.router'
+import encomendasRoutes from './modules/encomendas/encomendas.router'
+
 import { erroGlobal } from './middlewares/erroGlobal'
 import path from 'path'
 import { PRODUTOS_DIR } from './infra/upload/paths'
@@ -21,6 +23,7 @@ app.use(cors())
 app.use('/clientes', clientesRoutes)
 app.use('/produtos', produtosRoutes)
 app.use('/materiais', materiaisRoutes)
+app.use('/encomendas', encomendasRoutes)
 
 
 app.use(erroGlobal)
