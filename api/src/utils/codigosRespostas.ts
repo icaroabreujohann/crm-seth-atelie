@@ -67,7 +67,8 @@ export const CODIGOS_SUCESSO = {
      PRODUTO_N_EXISTE_SUCESS: { codigo: 2302, mensagem: 'O Produto não existe.' },
      PRODUTO_CRIAR_SUCESS: { codigo: 2303, mensagem: 'Produto criado com sucesso.' },
      PRODUTO_EDITAR_SUCESS: { codigo: 2304, mensagem: 'Produto editado com sucesso.' },
-     PRODUTO_EXCLUIR_SUCESS: { codigo: 2305, mensagem: 'Produto excluido com sucesso.' },
+     PRODUTO_EDITAR_FOTOS_SUCESS: { codigo: 2305, mensagem: 'Fotos do produto editadas com sucesso.' },
+     PRODUTO_EXCLUIR_SUCESS: { codigo: 2306, mensagem: 'Produto excluido com sucesso.' },
 
      MATERIAL_LISTAR_SUCESS: { codigo: 2400, mensagem: 'Materiais listados com sucesso.' },
      MATERIAL_EXISTE_SUCESS: { codigo: 2401, mensagem: 'O material já está registrado.' },

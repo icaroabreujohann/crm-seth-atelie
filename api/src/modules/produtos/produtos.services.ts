@@ -3,7 +3,7 @@ import { CriarProdutoDTO, EditarProdutoDTO } from './produtos.types'
 import { CODIGOS_ERRO } from '../../utils/codigosRespostas'
 import { ProdutosRepository } from './produtos.repository'
 import { PRODUTOS_DIR } from '../../infra/upload/paths'
-import { salvarFotosProduto } from '../../infra/upload/produtos.salvarfotos'
+import { editarFotosProduto, salvarFotosProduto } from '../../infra/upload/produtos.salvarfotos'
 import { excluirPasta } from '../../utils/filesystem/excluirPasta'
 import { assertResultadoExiste } from '../../shared/asserts/assertResultadoBusca'
 import { ProdutoMaterialRepository } from './materiais/produtoMaterial.repository'
@@ -42,7 +42,7 @@ export class ProdutosService {
 
           const materiais = await this.repositoryMateriais.listarPorProduto(produto.data.id)
 
-          const produtoCompleto = {...produto, materiais}
+          const produtoCompleto = { ...produto, materiais }
           return produtoCompleto
      }
 
@@ -59,8 +59,15 @@ export class ProdutosService {
           const produto = await this.repository.obterProdutoPorCodigo(codigo)
 
           assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
-
           return await this.repository.editar(produto.data.id, data)
+     }
+
+     async editarFotosProduto(codigo: string, fotos: Express.Multer.File[]) {
+          const produto = await this.repository.obterProdutoPorCodigo(codigo)
+          assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
+
+          await editarFotosProduto(codigo, fotos, PRODUTOS_DIR)
+          return produto
      }
 
      async excluirProduto(codigo: string) {

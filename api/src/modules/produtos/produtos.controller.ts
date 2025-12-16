@@ -28,6 +28,7 @@ export class ProdutosController {
      }
 
      criarProduto = async (req: Request, res: Response) => {
+          console.log('redbody criar',req.body)
           const data: CriarProdutoDTO = req.body
           validaRequisicao(data, ['nome', 'preco'])
           
@@ -40,10 +41,21 @@ export class ProdutosController {
      editarProduto = async (req: Request, res: Response) => {
           const codigo: string = String(req.params.codigo)
           const data: EditarProdutoDTO = req.body
+
+
           validaRequisicao(data, ['nome', 'preco'])
 
           const produtoEditado = await this.service.editarProduto(codigo, data)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.PRODUTO_EDITAR_SUCESS, produtoEditado)
+     }
+
+     editarFotosProduto = async (req: Request, res: Response) => {
+          const codigo: string = String(req.params.codigo)
+
+          const fotos = (req.files as Express.Multer.File[]) ?? []
+          
+          const fotosEditadas = await this.service.editarFotosProduto(codigo, fotos)
+          gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.PRODUTO_EDITAR_FOTOS_SUCESS, fotosEditadas)
      }
 
      excluirProduto = async (req: Request, res: Response) => {
