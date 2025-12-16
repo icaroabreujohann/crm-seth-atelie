@@ -9,10 +9,20 @@ export class ProdutosRepository {
           return await sql`select * from produtos`
      }
 
-     async listarPorCodigo(codigo: string): Promise<ResultadoBusca<Produto>> {
+     async listarProdutoPorCodigo(codigo: string): Promise<ResultadoBusca<Produto>> {
           const [produto] = await sql<Produto[]>`
                select * from produtos
                where codigo = ${codigo}
+               limit 1
+          `
+
+          return produto ? resultadoEncontrado(produto) : resultadoInexistente()
+     }
+
+     async listarProdutoPorId(id: number): Promise<ResultadoBusca<Produto>> {
+          const [produto] = await sql<Produto[]>`
+               select * from produtos
+               where id = ${id}
                limit 1
           `
 
@@ -57,23 +67,5 @@ export class ProdutosRepository {
                returning *
           `
           return produtoExcluido ?? null
-     }
-
-     //
-
-     async obterProdutoPorCodigo(codigo: string): Promise<ResultadoBusca<Produto>> {
-          const [produto] = await sql<Produto[]>`
-                    select * from produtos
-                    where codigo = ${codigo}
-               `
-          return produto ? resultadoEncontrado(produto) : resultadoInexistente()
-     }
-
-     async obterProdutoPorId(id: number): Promise<ResultadoBusca<Produto>> {
-          const [produto] = await sql<Produto[]>`
-                    select * from produtos
-                    where id = ${id}
-               `
-          return produto ? resultadoEncontrado(produto) : resultadoInexistente()
      }
 }

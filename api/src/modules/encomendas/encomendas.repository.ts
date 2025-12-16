@@ -20,7 +20,7 @@ export class EncomendasRepository {
         `
     }
 
-    async listarPorCodigo(codigo: string): Promise<ResultadoBusca<Encomenda>> {
+    async listarEncomendaPorCodigo(codigo: string): Promise<ResultadoBusca<Encomenda>> {
         const [encomenda] = await sql<Encomenda[]>`
             select
                 e.*,
@@ -37,7 +37,7 @@ export class EncomendasRepository {
         return encomenda ? resultadoEncontrado(encomenda) : resultadoInexistente()
     }
 
-    async listarPorId(id: number): Promise<ResultadoBusca<Encomenda>> {
+    async listarEncomendaPorId(id: number): Promise<ResultadoBusca<Encomenda>> {
         const [encomenda] = await sql<Encomenda[]>`
                         select * from encomendas
                         where id = ${id}

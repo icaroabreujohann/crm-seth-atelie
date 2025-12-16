@@ -4,7 +4,7 @@ import { resultadoEncontrado, resultadoInexistente } from '../../../utils/result
 import { CriarEncomendaMaterialRepoDTO, EditarEncomendaMaterialRepoDTO, EncomendaMaterial } from './encomendaMaterial.types';
 
 export class EncomendaMaterialRepository  {
-     async listarPorEncomenda(encomenda_id: number): Promise<ResultadoBusca<EncomendaMaterial[]>> {
+     async listarMateriaisPorEncomenda(encomenda_id: number): Promise<ResultadoBusca<EncomendaMaterial[]>> {
           const materiais = await sql<EncomendaMaterial[]>`
           select
           em.*,

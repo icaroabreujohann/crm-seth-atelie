@@ -19,11 +19,11 @@ export class EncomendasServices {
 
      private async gerarCodigoEncomendaUnico(): Promise<string> {
           let codigo = randomUUID()
-          let encomendaExiste = await this.repository.listarPorCodigo(codigo)
+          let encomendaExiste = await this.repository.listarEncomendaPorCodigo(codigo)
 
           while (encomendaExiste.existe) {
                codigo = randomUUID()
-               encomendaExiste = await this.repository.listarPorCodigo(codigo)
+               encomendaExiste = await this.repository.listarEncomendaPorCodigo(codigo)
           }
 
           return codigo
@@ -34,17 +34,17 @@ export class EncomendasServices {
      }
 
      async listarPorCodigo(codigo: string) {
-          const encomenda = await this.repository.listarPorCodigo(codigo)
+          const encomenda = await this.repository.listarEncomendaPorCodigo(codigo)
           assertResultadoExiste(encomenda, CODIGOS_ERRO.ENCOMENDA_N_EXISTE_ERR, codigo)
 
           return encomenda
      }
 
      async listarCompleta(codigo: string) {
-          const encomenda = await this.repository.listarPorCodigo(codigo)
+          const encomenda = await this.repository.listarEncomendaPorCodigo(codigo)
           assertResultadoExiste(encomenda, CODIGOS_ERRO.ENCOMENDA_N_EXISTE_ERR, codigo)
 
-          const materiais = await this.repositoryEncomendaMaterial.listarPorEncomenda(encomenda.data.id)
+          const materiais = await this.repositoryEncomendaMaterial.listarMateriaisPorEncomenda(encomenda.data.id)
 
           return {...encomenda, materiais}
      }
@@ -52,10 +52,10 @@ export class EncomendasServices {
      async criarEncomenda(data: CriarEncomendaDTO) {
           const codigo = await this.gerarCodigoEncomendaUnico()
 
-          const produto = await this.repositoryProduto.listarPorCodigo(data.produto_codigo)
+          const produto = await this.repositoryProduto.listarProdutoPorCodigo(data.produto_codigo)
           assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, data.produto_codigo)
 
-          const produto_materiais = await this.repositoryProdutoMaterial.listarPorProduto(produto.data.id)
+          const produto_materiais = await this.repositoryProdutoMaterial.listarMaterialPorProduto(produto.data.id)
           assertResultadoExiste(produto_materiais, CODIGOS_ERRO.PRODUTO_MATERIAL_N_EXISTE_ERRO, data.produto_codigo)
 
           const cliente = await this.repositoryClientes.listarPorId(data.cliente_id)
@@ -90,7 +90,7 @@ export class EncomendasServices {
      }
 
      async editarEncomenda(codigo: string, data: EditarEncomendaDTO) {
-          const encomenda = await this.repository.listarPorCodigo(codigo)
+          const encomenda = await this.repository.listarEncomendaPorCodigo(codigo)
           assertResultadoExiste(encomenda, CODIGOS_ERRO.ENCOMENDA_N_EXISTE_ERR, codigo)
 
           if (data.data_pedido && !data.data_prazo) data = { ...data, data_prazo: adicionarDias(data.data_pedido, 20) }
@@ -99,7 +99,7 @@ export class EncomendasServices {
      }
 
      async excluirEncomenda(codigo: string) {
-          const encomenda = await this.repository.listarPorCodigo(codigo)
+          const encomenda = await this.repository.listarEncomendaPorCodigo(codigo)
           assertResultadoExiste(encomenda, CODIGOS_ERRO.ENCOMENDA_N_EXISTE_ERR, codigo)
 
           return await this.repository.excluir(encomenda.data.id)

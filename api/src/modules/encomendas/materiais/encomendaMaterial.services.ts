@@ -12,17 +12,17 @@ export class EncomendaMaterialServices {
      private repositoryMaterial = new MateriaisRepository()
 
      async listarMaterialPorEncomenda(codigo: string) {
-          const encomenda = await this.repositoryEncomendas.listarPorCodigo(codigo)
+          const encomenda = await this.repositoryEncomendas.listarEncomendaPorCodigo(codigo)
           assertResultadoExiste(encomenda, CODIGOS_ERRO.ENCOMENDA_N_EXISTE_ERR, codigo)
 
-          return await this.repository.listarPorEncomenda(encomenda.data.id)
+          return await this.repository.listarMateriaisPorEncomenda(encomenda.data.id)
      }
 
      async adicionarMaterial(encomenda_codigo: string, data: CriarEncomendaMaterialDTO) {
-          const encomenda = await this.repositoryEncomendas.listarPorCodigo(encomenda_codigo)
+          const encomenda = await this.repositoryEncomendas.listarEncomendaPorCodigo(encomenda_codigo)
           assertResultadoExiste(encomenda, CODIGOS_ERRO.ENCOMENDA_N_EXISTE_ERR, encomenda_codigo)
 
-          const material = await this.repositoryMaterial.obterMaterialPorCodigo(data.material_codigo)
+          const material = await this.repositoryMaterial.listarMaterialPorCodigo(data.material_codigo)
           assertResultadoExiste(material, CODIGOS_ERRO.ENCOMENDA_MATERIAL_N_EXISTE_ERRO, data.material_codigo)
 
           const materialEncomenda = {
@@ -35,13 +35,13 @@ export class EncomendaMaterialServices {
      }
 
      async editarMaterial(encomenda_codigo: string, id: number, data: EditarEncomendaMaterialDTO) {
-          const encomenda = await this.repositoryEncomendas.listarPorCodigo(encomenda_codigo)
+          const encomenda = await this.repositoryEncomendas.listarEncomendaPorCodigo(encomenda_codigo)
           assertResultadoExiste(encomenda, CODIGOS_ERRO.ENCOMENDA_N_EXISTE_ERR, encomenda)
 
           const materialEncomenda = await this.repository.listarMaterialPorId(id)
           assertResultadoExiste(materialEncomenda, CODIGOS_ERRO.ENCOMENDA_MATERIAL_N_EXISTE_ERRO, id)
 
-          const material = await this.repositoryMaterial.obterMaterialPorId(materialEncomenda.data.material_id)
+          const material = await this.repositoryMaterial.listarMaterialPorId(materialEncomenda.data.material_id)
           assertResultadoExiste(material, CODIGOS_ERRO.ENCOMENDA_MATERIAL_N_EXISTE_ERRO, materialEncomenda.data.material_id)
 
           validaRegraNegocio([{ condicao: materialEncomenda.data.encomenda_id != encomenda.data.id, valor: materialEncomenda, codigoResposta: CODIGOS_ERRO.ENCOMENDA_MATERIAL_N_CORRESPONDE_ERRO }])
@@ -51,7 +51,7 @@ export class EncomendaMaterialServices {
      }
 
      async excluirMaterial(encomenda_codigo: string, id: number) {
-          const encomenda = await this.repositoryEncomendas.listarPorCodigo(encomenda_codigo)
+          const encomenda = await this.repositoryEncomendas.listarEncomendaPorCodigo(encomenda_codigo)
           assertResultadoExiste(encomenda, CODIGOS_ERRO.ENCOMENDA_N_EXISTE_ERR, encomenda)
 
           const materialEncomenda = await this.repository.listarMaterialPorId(id)

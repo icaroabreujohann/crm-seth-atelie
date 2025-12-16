@@ -12,17 +12,17 @@ export class ProdutoMaterialService {
      private repositoryProdutos = new ProdutosRepository()
 
      async listarMaterialPorProduto(produto_codigo: string) {
-          const produto = await this.repositoryProdutos.obterProdutoPorCodigo(produto_codigo)
+          const produto = await this.repositoryProdutos.listarProdutoPorCodigo(produto_codigo)
           assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, produto_codigo)
 
-          return await this.repository.listarPorProduto(produto.data.id)
+          return await this.repository.listarMaterialProdutoPorId(produto.data.id)
      }
 
      async adicionarMaterial(produto_codigo: string, data: CriarProdutoMaterialDTO) {
-          const produto = await this.repositoryProdutos.obterProdutoPorCodigo(produto_codigo)
+          const produto = await this.repositoryProdutos.listarProdutoPorCodigo(produto_codigo)
           assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, produto_codigo)
 
-          const material = await this.repositoryMaterial.obterMaterialPorCodigo(data.material_codigo)
+          const material = await this.repositoryMaterial.listarMaterialPorCodigo(data.material_codigo)
           assertResultadoExiste(material, CODIGOS_ERRO.MATERIAL_N_EXISTE_ERR, data.material_codigo)
 
           const materialProduto = {
@@ -35,29 +35,39 @@ export class ProdutoMaterialService {
      }
 
      async editarMaterial(produto_codigo: string, id: number, data: EditarProdutoMaterialDTO) {
-          const produto = await this.repositoryProdutos.obterProdutoPorCodigo(produto_codigo)
+          const produto = await this.repositoryProdutos.listarProdutoPorCodigo(produto_codigo)
           assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, produto_codigo)
 
-          const materialProduto = await this.repository.obterMaterialProdutoPorId(id)
+          const materialProduto = await this.repository.listarMaterialProdutoPorId(id)
           assertResultadoExiste(materialProduto, CODIGOS_ERRO.PRODUTO_MATERIAL_N_EXISTE_ERRO, produto_codigo)
 
-          const material = await this.repositoryMaterial.obterMaterialPorId(materialProduto.data.material_id)
+          const material = await this.repositoryMaterial.listarMaterialPorId(materialProduto.data.material_id)
           assertResultadoExiste(material, CODIGOS_ERRO.MATERIAL_N_EXISTE_ERR, materialProduto.data.material_id)
 
-          validaRegraNegocio([{ condicao: materialProduto.data.produto_id != produto.data.id, valor: materialProduto, codigoResposta: CODIGOS_ERRO.PRODUTO_MATERIAL_N_CORRESPONDE_ERRO }])
+          validaRegraNegocio([
+               {
+                    condicao: materialProduto.data.produto_id != produto.data.id,
+                    valor: materialProduto,
+                    codigoResposta: CODIGOS_ERRO.PRODUTO_MATERIAL_N_CORRESPONDE_ERRO
+               }
+          ])
 
           const dataMaterial = { quantidade: data.quantidade, preco_final: material.data.preco_x_qtd * data.quantidade }
           return await this.repository.editar(id, dataMaterial)
      }
 
      async excluirMaterial(produto_codigo: string, id: number) {
-          const produto = await this.repositoryProdutos.obterProdutoPorCodigo(produto_codigo)
+          const produto = await this.repositoryProdutos.listarProdutoPorCodigo(produto_codigo)
           assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, produto_codigo)
 
-          const materialProduto = await this.repository.obterMaterialProdutoPorId(id)
+          const materialProduto = await this.repository.listarMaterialProdutoPorId(id)
           assertResultadoExiste(materialProduto, CODIGOS_ERRO.PRODUTO_MATERIAL_N_EXISTE_ERRO, id)
 
-          validaRegraNegocio([{ condicao: materialProduto.data.produto_id != produto.data.id, valor: materialProduto, codigoResposta: CODIGOS_ERRO.PRODUTO_MATERIAL_N_CORRESPONDE_ERRO }])
+          validaRegraNegocio([{
+               condicao: materialProduto.data.produto_id != produto.data.id,
+               valor: materialProduto,
+               codigoResposta: CODIGOS_ERRO.PRODUTO_MATERIAL_N_CORRESPONDE_ERRO
+          }])
 
           return await this.repository.excluir(id)
      }

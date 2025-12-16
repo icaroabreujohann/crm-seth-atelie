@@ -15,11 +15,11 @@ export class ProdutosService {
 
      private async gerarCodigoProdutoUnico(): Promise<string> {
           let codigo = randomUUID()
-          let produtoExiste = await this.repository.obterProdutoPorCodigo(codigo)
+          let produtoExiste = await this.repository.listarProdutoPorCodigo(codigo)
 
           while (produtoExiste.existe) {
                codigo = randomUUID()
-               produtoExiste = await this.repository.obterProdutoPorCodigo(codigo)
+               produtoExiste = await this.repository.listarProdutoPorCodigo(codigo)
           }
 
           return codigo
@@ -30,17 +30,17 @@ export class ProdutosService {
      }
 
      async listarPorCodigo(codigo: string) {
-          const produto = await this.repository.listarPorCodigo(codigo)
+          const produto = await this.repository.listarProdutoPorCodigo(codigo)
 
           assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
           return produto
      }
 
      async listarCompleto(codigo: string) {
-          const produto = await this.repository.listarPorCodigo(codigo)
+          const produto = await this.repository.listarProdutoPorCodigo(codigo)
           assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
 
-          const materiais = await this.repositoryMateriais.listarPorProduto(produto.data.id)
+          const materiais = await this.repositoryMateriais.listarMaterialPorProduto(produto.data.id)
 
           const produtoCompleto = { ...produto, materiais }
           return produtoCompleto
@@ -56,14 +56,14 @@ export class ProdutosService {
      }
 
      async editarProduto(codigo: string, data: EditarProdutoDTO) {
-          const produto = await this.repository.obterProdutoPorCodigo(codigo)
+          const produto = await this.repository.listarProdutoPorCodigo(codigo)
 
           assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
           return await this.repository.editar(produto.data.id, data)
      }
 
      async editarFotosProduto(codigo: string, fotos: Express.Multer.File[]) {
-          const produto = await this.repository.obterProdutoPorCodigo(codigo)
+          const produto = await this.repository.listarProdutoPorCodigo(codigo)
           assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
 
           await editarFotosProduto(codigo, fotos, PRODUTOS_DIR)
@@ -71,7 +71,7 @@ export class ProdutosService {
      }
 
      async excluirProduto(codigo: string) {
-          const produto = await this.repository.obterProdutoPorCodigo(codigo)
+          const produto = await this.repository.listarProdutoPorCodigo(codigo)
 
           assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
           await excluirPasta(PRODUTOS_DIR, codigo)

@@ -5,7 +5,7 @@ import { Produto } from '../produtos.types';
 import { CriarProdutoMaterialRepoDTO, EditarProdutoMaterialRepoDTO, ProdutoMaterial } from './produtoMaterial.types';
 
 export class ProdutoMaterialRepository {
-     async listarPorProduto(produto_id: number): Promise<ResultadoBusca<ProdutoMaterial[]>> {
+     async listarMaterialPorProduto(produto_id: number): Promise<ResultadoBusca<ProdutoMaterial[]>> {
           const materiais = await sql<ProdutoMaterial[]>`
                select
                     pm.*,
@@ -19,6 +19,14 @@ export class ProdutoMaterialRepository {
 
           `
           return materiais ? resultadoEncontrado(materiais) : resultadoInexistente()
+     }
+
+     async listarMaterialProdutoPorId(id: number): Promise<ResultadoBusca<ProdutoMaterial>> {
+          const [material] = await sql<ProdutoMaterial[]>`
+                    select * from produtos_materiais
+                    where id = ${id}
+               `
+          return material ? resultadoEncontrado(material) : resultadoInexistente()
      }
 
      async criar(data: CriarProdutoMaterialRepoDTO): Promise<ProdutoMaterial | null> {
@@ -54,15 +62,5 @@ export class ProdutoMaterialRepository {
                returning *
           `
           return material ?? null
-     }
-
-     //
-
-     async obterMaterialProdutoPorId(id: number): Promise<ResultadoBusca<ProdutoMaterial>> {
-          const [material] = await sql<ProdutoMaterial[]>`
-                    select * from produtos_materiais
-                    where id = ${id}
-               `
-          return material ? resultadoEncontrado(material) : resultadoInexistente()
      }
 }

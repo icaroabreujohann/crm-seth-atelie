@@ -9,11 +9,11 @@ export class MateriaisServices {
 
      private async gerarCodigoMaterialUnico(): Promise<string> {
           let codigo = randomUUID()
-          let produtoExiste = await this.repository.obterMaterialPorCodigo(codigo)
+          let produtoExiste = await this.repository.listarMaterialPorCodigo(codigo)
 
           while (produtoExiste.existe) {
                codigo = randomUUID()
-               produtoExiste = await this.repository.obterMaterialPorCodigo(codigo)
+               produtoExiste = await this.repository.listarMaterialPorCodigo(codigo)
           }
 
           return codigo
@@ -24,7 +24,7 @@ export class MateriaisServices {
      }
 
      async listarPorCodigo(codigo: string) {
-          const material = await this.repository.listarPorCodigo(codigo)
+          const material = await this.repository.listarMaterialPorCodigo(codigo)
 
           assertResultadoExiste(material, CODIGOS_ERRO.MATERIAL_N_EXISTE_ERR, codigo)
           return material
@@ -37,14 +37,14 @@ export class MateriaisServices {
      }
 
      async editarMaterial(codigo: string, data: EditarMaterialDTO) {
-          const material = await this.repository.obterMaterialPorCodigo(codigo)
+          const material = await this.repository.listarMaterialPorCodigo(codigo)
 
           assertResultadoExiste(material, CODIGOS_ERRO.MATERIAL_N_EXISTE_ERR, codigo)
           return await this.repository.editar(material.data.id, data)
      }
 
      async excluirMaterial(codigo: string) {
-          const material = await this.repository.obterMaterialPorCodigo(codigo)
+          const material = await this.repository.listarMaterialPorCodigo(codigo)
 
           assertResultadoExiste(material, CODIGOS_ERRO.MATERIAL_N_EXISTE_ERR, codigo)
           return await this.repository.excluir(material.data.id)
