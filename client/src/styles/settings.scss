@@ -8,3 +8,151 @@
 // @use 'vuetify/settings' with (
 //   $color-pack: false
 // );
+
+:root {
+--black: #000000;
+--main: #471A3C;
+--white: #FCFAFA;
+--light: #E79DAF;
+}
+
+@font-face {
+     font-family: f-bold;
+     src: url('/fonts/bold.ttf');
+}
+
+@font-face {
+     font-family: f-semi;
+     src: url('/fonts/semi.ttf');
+}
+
+@font-face {
+     font-family: f-regular;
+     src: url('/fonts/regular.ttf');
+}
+
+@font-face {
+     font-family: f-light;
+     src: url('/fonts/light.ttf');
+}
+
+.f-bold {
+     font-family: f-bold;
+
+}
+
+.f-semi {
+     font-family: f-semi;
+}
+
+.f-regular {
+     font-family: f-regular;
+}
+
+.f-light {
+     font-family: f-light;
+}
+
+.text-main {
+     color: #471A3C;
+}
+
+* {
+     font-family: f-regular;
+     -webkit-font-smoothing: antialiased;
+     letter-spacing: -0.5px !important;
+     box-shadow: none !important;
+     font-weight: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+.v-card-title {
+     font-family: f-bold;
+     border: 0px;
+     font-weight: normal;
+     letter-spacing: -0.5px !important;
+}
+
+
+p {
+     font-size: 1rem !important;
+}
+
+
+.v-overlay__scrim {
+     background-color: black !important;
+     opacity: 60% !important;
+}
+
+.v-btn,
+.v-chip {
+     border-radius: 10px;
+     box-shadow: none !important;
+     text-transform: capitalize;
+}
+
+.v-btn-toggle {
+     border-radius: 10px;
+     box-shadow: none !important;
+     border: 0.5px solid #00000027;
+}
+
+[class*="elevation-"] {
+     box-shadow: none !important;
+}
+
+.v-card {
+     border-radius: 10px !important;
+     border: 0.5px solid #00000012;
+     box-shadow: none !important;
+}
+
+canvas {
+     border-radius: 10px !important;
+     border: 0.5px solid #00000012;
+     box-shadow: none !important;
+}
+
+.v-table,
+.v-data-table {
+     border-radius: 10px !important;
+     border: 0.5px solid #00000012;
+     box-shadow: none !important;
+}
+
+.v-dialog .v-card {
+     border-radius: 10px !important;
+     border: 0.5px solid #00000012;
+     box-shadow: none !important;
+}
+
+.v-tab {
+     border: none;
+}
+
+.subText{
+     opacity: 50%;
+}
+
+.v-card>.v-card {
+     border-radius: 10px;
+}
+
+.no-border {
+     border: none !important;
+}
+
+@media (max-width: 1366px) {
+
+     h1,
+     h2 {
+          font-size: 1.6rem;
+     }
+
+     p {
+          font-size: 0.9rem !important;
+     }
+}
