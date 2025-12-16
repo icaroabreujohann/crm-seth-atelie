@@ -14,7 +14,7 @@ export class MaterialsController {
      }
 
      listarMaterialCodigo = async (req: Request, res: Response) => {
-          const codigo: string = String(req.params.codigo)
+          const codigo = res.locals.codigo
 
           const material = await this.service.listarPorCodigo(codigo)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.MATERIAL_LISTAR_SUCESS, material)
@@ -29,7 +29,7 @@ export class MaterialsController {
      }
 
      editarMaterial = async (req: Request, res: Response) => {
-          const codigo: string = String(req.params.codigo)
+          const codigo = res.locals.codigo
           const data: EditarMaterialDTO = req.body
 
           const materialEditado = await this.service.editarMaterial(codigo, data)
@@ -37,7 +37,7 @@ export class MaterialsController {
      }
 
      excluirMaterial = async (req: Request, res: Response) => {
-          const codigo: string = String(req.params.codigo)
+          const codigo = res.locals.codigo
 
           const materialExcluido = await this.service.excluirMaterial(codigo)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.MATERIAL_EXCLUIR_SUCESS, materialExcluido)

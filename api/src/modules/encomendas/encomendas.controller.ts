@@ -13,14 +13,14 @@ export class EncomendasController {
      }
 
      listarCompleta = async (req: Request, res:Response) => {
-          const codigo = String(req.params.codigo)
+          const codigo = res.locals.codigo
 
           const encomendaCompleta = await this.services.listarCompleta(codigo)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.ENCOMENDA_LISTAR_SUCESS, encomendaCompleta)
      }
 
      listarPorCodigo = async (req: Request, res: Response) => {
-          const codigo = String(req.params.codigo)
+          const codigo = res.locals.codigo
 
           const encomenda = await this.services.listarPorCodigo(codigo)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.ENCOMENDA_LISTAR_SUCESS, encomenda)
@@ -35,7 +35,7 @@ export class EncomendasController {
      }
 
      editarEncomenda = async (req: Request, res: Response) => {
-          const codigo = String(req.params.codigo)
+          const codigo = res.locals.codigo
           const data = req.body
 
           const encomenda = await this.services.editarEncomenda(codigo, data)
@@ -43,7 +43,7 @@ export class EncomendasController {
      }
 
      excluirEncomenda = async (req: Request, res: Response) => {
-          const codigo = String(req.params.codigo)
+          const codigo = res.locals.codigo
 
           const encomenda = await this.services.excluirEncomenda(codigo)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.ENCOMENDA_EXCLUIR_SUCESS, encomenda)

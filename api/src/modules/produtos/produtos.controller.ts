@@ -14,14 +14,14 @@ export class ProdutosController {
      }
 
      listarProdutoCodigo = async (req: Request, res: Response) => {
-          const codigo: string = String(req.params.codigo)
+          const codigo = res.locals.codigo
 
           const produto = await this.service.listarPorCodigo(codigo)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.PRODUTO_LISTAR_SUCESS, produto)
      }
 
      listarProdutoCompleto = async (req: Request, res: Response) => {
-          const codigo: string = String(req.params.codigo)
+          const codigo = res.locals.codigo
 
           const produto = await this.service.listarCompleto(codigo)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.PRODUTO_LISTAR_SUCESS, produto)
@@ -39,7 +39,7 @@ export class ProdutosController {
      }
 
      editarProduto = async (req: Request, res: Response) => {
-          const codigo: string = String(req.params.codigo)
+          const codigo = res.locals.codigo
           const data: EditarProdutoDTO = req.body
 
 
@@ -50,7 +50,7 @@ export class ProdutosController {
      }
 
      editarFotosProduto = async (req: Request, res: Response) => {
-          const codigo: string = String(req.params.codigo)
+          const codigo = res.locals.codigo
 
           const fotos = (req.files as Express.Multer.File[]) ?? []
           
@@ -59,7 +59,7 @@ export class ProdutosController {
      }
 
      excluirProduto = async (req: Request, res: Response) => {
-          const codigo: string = String(req.params.codigo)
+          const codigo = res.locals.codigo
 
           const produtoExcluido = await this.service.excluirProduto(codigo)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.PRODUTO_EXCLUIR_SUCESS, produtoExcluido)

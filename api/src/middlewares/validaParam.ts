@@ -18,6 +18,6 @@ export function validaCodigoParam(req: Request, res: Response, next: NextFunctio
 
      if(!codigo || !UUID_REGEX.test(codigo)) throw new ErroCustomizado(CODIGOS_ERRO.CODIGO_INVALIDO, {codigo}, 400)
 
-     req.params.codigo = String(codigo)
+     res.locals.codigo = String(codigo)
      next()
 }
