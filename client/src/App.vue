@@ -1,17 +1,7 @@
 <template>
      <v-app>
           <v-navigation-drawer permanent class="pa-4">
-               <!-- <v-list-item class="pa-0 ml-1 mt-3 mb-7">
-                    <div class="d-flex align-center">
-                         <v-icon color="main" style="font-size: 2rem;">mdi-star-four-points-box-outline</v-icon>
-                         <div class="ml-2">
-                              <h2>Seth Ateliê</h2>
-                         </div>
-                    </div>
-               </v-list-item> -->
-
                <h5 class="subText f-bold ml-4">MENU</h5>
-
                <v-list-item
                     v-for="i in menuItems"
                     :to="i.rota"
@@ -24,7 +14,12 @@
                </v-list-item>
           </v-navigation-drawer>
           <v-main>
-               <router-view/>
+               <v-container class="pa-10">
+                    <u><p class="text-main ml-1 mb-5">@seth.ateliê{{ route.path }}</p></u>
+                    <v-card class="pa-10">
+                         <router-view/>
+                    </v-card>
+               </v-container>
           </v-main>
      </v-app>
 
@@ -48,7 +43,10 @@
 
 <script lang="ts" setup>
      import { ref } from 'vue'
+     import { useRoute } from 'vue-router'
      import { usarFeedbackStore } from './stores/feedbacks.store'
+
+     const route = useRoute()
 
      const feedback = usarFeedbackStore()
 
