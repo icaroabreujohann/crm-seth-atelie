@@ -7,6 +7,13 @@ export type Cliente = {
      data_atualizacao: string
 }
 
+export type ClienteForm = {
+     id?: number
+     nome: string
+     instagram: string | null
+     telefone: string | null
+}
+
 export type ClienteId = {
      id: number
 }

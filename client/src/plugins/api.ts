@@ -22,6 +22,7 @@ api.interceptors.response.use(
           }
 
           const data = error.response.data
+          console.log(data)
           feedback.erro(data?.mensagem ?? 'Erro inesperado')
           return Promise.reject(error)
      }

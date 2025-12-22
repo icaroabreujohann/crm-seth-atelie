@@ -28,8 +28,8 @@ export class ClientesService {
           ])
 
           validaRegraNegocio([
-               { condicao: clienteInstagram.existe, valor: clienteInstagram, codigoResposta: CODIGOS_ERRO.CLIENTE_EXISTE_ERR },
-               { condicao: clienteTelefone.existe, valor: clienteTelefone, codigoResposta: CODIGOS_ERRO.CLIENTE_EXISTE_ERR }
+               { condicao: clienteInstagram.existe, valor: clienteInstagram, codigoResposta: CODIGOS_ERRO.CLIENTE_EXISTE_IG_ERR },
+               { condicao: clienteTelefone.existe, valor: clienteTelefone, codigoResposta: CODIGOS_ERRO.CLIENTE_EXISTE_TEL_ERR }
           ])
 
           return await this.repository.criar(data)
@@ -47,7 +47,7 @@ export class ClientesService {
 
           validaRegraNegocio([
                { condicao: clienteInstagram.existe && clienteInstagram.data.id != id, valor: { ...data, id }, codigoResposta: CODIGOS_ERRO.CLIENTE_EXISTE_IG_ERR },
-               { condicao: clienteTelefone.existe && clienteTelefone.data.id != id, valor: { ...data, id }, codigoResposta: CODIGOS_ERRO.CLIENTE_EXISTE_IG_ERR }
+               { condicao: clienteTelefone.existe && clienteTelefone.data.id != id, valor: { ...data, id }, codigoResposta: CODIGOS_ERRO.CLIENTE_EXISTE_TEL_ERR }
           ])
 
           return await this.repository.editar(id, data)
