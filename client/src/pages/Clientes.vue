@@ -4,11 +4,10 @@
           <div class="d-flex align-end w-50 justify-end">
                <div class="w-50">
                     <v-text-field density="compact" class="mr-3" variant="solo-filled" label="Pesquise por um cliente"
-                         prepend-inner-icon="mdi-account-search-outline" hide-details v-model="filtroClientes"
-                    >
+                         prepend-inner-icon="mdi-account-search-outline" hide-details v-model="filtroClientes">
                          <template #prepend-inner>
-                              <HugeiconsIcon class="subText" stroke-width="2" size="20" :icon="Search02Icon"/>
-                         </template>     
+                              <HugeiconsIcon class="subText" stroke-width="2" size="20" :icon="Search02Icon" />
+                         </template>
                     </v-text-field>
                </div>
                <v-btn color="main" @click="abrirCriar()">Adicionar</v-btn>
@@ -22,8 +21,8 @@
      </v-data-table>
 
      <ClienteFormDialog v-model="dialogFormCliente" :cliente="clienteSelecionado" @salvo="salvarCliente" />
-     <ConfirmaExclusao v-if="clienteSelecionado" :idParaExcluir="clienteSelecionado.id" :tipo="'cliente'"
-          v-model="dialogConfirmaExclusao" @exlcuir="excluirCliente" />
+     <ConfirmaExclusao v-if="clienteSelecionado" :identificador="clienteSelecionado.id" :tipo="'cliente'"
+          v-model="dialogConfirmaExclusao" @excluir="excluirCliente" />
 
 </template>
 
@@ -86,7 +85,14 @@ async function salvarCliente(form: ClienteForm) {
      feedback.sucesso('Cliente criado com sucesso')
 }
 
-async function excluirCliente(id: number) {
+async function excluirCliente(identificador: number | string) {
+     const id = Number(identificador)
+
+     if (!Number.isInteger(id)) {
+          throw new Error('ID inválido para cliente')
+     }
+
+
      await ClientesServices.excluir(id)
      listarClientes()
      dialogConfirmaExclusao.value = false

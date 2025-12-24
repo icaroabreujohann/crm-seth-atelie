@@ -37,7 +37,6 @@ export interface MaterialForm {
 }
 export interface CriarMaterialDTO {
      nome: string,
-     codigo: string | null,
      tipo_id: number,
      unidade_medida_id: number,
      preco: number,

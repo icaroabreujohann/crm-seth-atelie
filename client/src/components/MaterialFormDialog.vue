@@ -2,7 +2,8 @@
      <v-dialog v-model="dialog" width="30vw">
           <v-card class="pa-7">
                <div class="d-flex align-center mb-5">
-                    <HugeiconsIcon class="text-light mr-2" :stroke-width="2" :size="30" color="light" :icon="modoEditar ? UserEdit01Icon : UserAdd01Icon" />
+                    <HugeiconsIcon class="text-light mr-2" :stroke-width="2" :size="30" color="light"
+                         :icon="modoEditar ? UserEdit01Icon : UserAdd01Icon" />
                     <h1>{{ modoEditar ? 'Editar Material' : 'Criar Material' }}</h1>
                </div>
 
@@ -10,7 +11,39 @@
                     <v-row>
                          <v-col cols="12">
                               <p>Nome</p>
-                              <v-text-field variant="solo-filled" v-model="formMaterialRef.nome"/>
+                              <v-text-field variant="solo-filled" v-model="formMaterialRef.nome"
+                                   :rules="formRegras.obrigatorio" />
+                         </v-col>
+                    </v-row>
+                    <v-row>
+                         <v-col cols="6">
+                              <p>Tipo Material</p>
+                              <v-select :items="tiposMaterial" item-title="nome" item-value="id" variant="solo-filled"
+                                   v-model="formMaterialRef.tipo_id" :rules="formRegras.obrigatorio" />
+                         </v-col>
+                         <v-col cols="6">
+                              <p>Unidade de Medida</p>
+                              <v-select :items="unidadesMedida" item-title="nome" item-value="id" variant="solo-filled"
+                                   v-model="formMaterialRef.unidade_medida_id" :rules="formRegras.obrigatorio" />
+                         </v-col>
+                    </v-row>
+                    <v-row>
+                         <v-col cols="6">
+                              <p>Preço (R$)</p>
+                              <v-text-field type="number" hide-spin-buttons variant="solo-filled"
+                                   v-model="formMaterialRef.preco" :rules="formRegras.obrigatorio" />
+                         </v-col>
+                         <v-col cols="6">
+                              <p>Quantidade</p>
+                              <v-text-field type="number" hide-spin-buttons variant="solo-filled"
+                                   v-model="formMaterialRef.quantidade" :rules="formRegras.obrigatorio" />
+                         </v-col>
+                    </v-row>
+                    <v-row>
+                         <v-col cols="12">
+                              <p>Observações</p>
+                              <v-textarea variant="solo-filled" v-model="formMaterialRef.observacoes" rows="5"
+                                   no-resize></v-textarea>
                          </v-col>
                     </v-row>
                     <v-row>
@@ -29,10 +62,16 @@
 </template>
 
 <script lang="ts" setup>
+import { ref, computed, watch, onMounted } from 'vue'
 import type { MaterialCompleto, MaterialForm } from '@/modules/materiais/materiais.types';
+import { useAuxiliaresStore } from '@/stores/auxiliares.store';
+
 import { HugeiconsIcon } from '@hugeicons/vue';
 import { UserAdd01Icon, UserEdit01Icon } from '@hugeicons/core-free-icons';
-import { ref, computed, watch } from 'vue'
+import { storeToRefs } from 'pinia';
+
+const auxiliaresStore = useAuxiliaresStore()
+const { tiposMaterial, unidadesMedida } = storeToRefs(auxiliaresStore)
 
 const props = defineProps<{
      material?: MaterialCompleto | null
@@ -52,14 +91,18 @@ const dialog = computed({
 const formMaterialDefault: MaterialForm = {
      codigo: '',
      nome: '',
-     tipo_id: 0,
-     unidade_medida_id: 0,
+     tipo_id: 1,
+     unidade_medida_id: 1,
      preco: 0,
      quantidade: 0,
      observacoes: '',
 }
 const vFormRef = ref()
 const formMaterialRef = ref<MaterialForm>({ ...formMaterialDefault })
+
+const formRegras = {
+     obrigatorio: [(v: string) => !!v || 'Campo obrigatório']
+}
 
 const modoEditar = computed(() => !!props.material)
 
@@ -88,6 +131,10 @@ watch(
      { immediate: true }
 
 )
+
+onMounted(async () => {
+     await auxiliaresStore.carregar()
+})
 
 
 </script>

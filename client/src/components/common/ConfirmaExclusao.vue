@@ -22,7 +22,7 @@ import { ref, computed } from 'vue'
 
 
 const props = defineProps<{
-     idParaExcluir: number,
+     identificador: number | string,
      tipo: string,
      modelValue: boolean
 }>()
@@ -30,7 +30,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
      (e: 'update:modelValue', value: boolean): void
-     (e: 'exlcuir', id: number): void
+     (e: 'excluir', identificador: number | string): void
 }>()
 
 const dialog = computed({
@@ -39,7 +39,7 @@ const dialog = computed({
 })
 
 function enviarExclusao(){
-     emit('exlcuir', props.idParaExcluir)
+     emit('excluir', props.identificador)
 }
 
 
