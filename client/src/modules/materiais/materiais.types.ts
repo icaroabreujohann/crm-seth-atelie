@@ -26,6 +26,15 @@ export interface MaterialCompleto {
      data_alteracao: string,
 }
 
+export interface MaterialForm {
+     codigo?: string | null,
+     nome: string,
+     tipo_id: number,
+     unidade_medida_id: number,
+     preco: number,
+     quantidade: number,
+     observacoes: string | null,
+}
 export interface CriarMaterialDTO {
      nome: string,
      codigo: string | null,

@@ -29,13 +29,20 @@
           </template>
      </v-data-table>
 
+     <MaterialFormDialog
+          v-model="dialogFormMaterial"
+          :material="materialSelecionado"
+          @salvo=""
+     />
 </template>
 
 <script lang="ts" setup>
 import { MateriaisServices } from '@/modules/materiais/materiais.services'
 import type { MaterialCompleto } from '@/modules/materiais/materiais.types'
 import { formatarDataHoraBR } from '@/utils/formataData'
+
 import MenuAcoes from '@/components/common/MenuAcoes.vue'
+import MaterialFormDialog from '@/components/MaterialFormDialog.vue'
 
 import { HugeiconsIcon } from '@hugeicons/vue'
 import { Search02Icon } from '@hugeicons/core-free-icons'
@@ -54,6 +61,9 @@ const materiaisHeaders = [
      { title: 'Data Alteração', value: 'data_alteracao', sortable: true },
      { title: 'Ações', value: 'acoes', width: '10%' }
 ]
+const materialSelecionado = ref<MaterialCompleto | null>(null)
+
+const dialogFormMaterial = ref(true)
 
 async function listarMateriais() {
      const response = await MateriaisServices.listar()
