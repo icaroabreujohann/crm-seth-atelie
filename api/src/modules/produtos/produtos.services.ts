@@ -3,7 +3,7 @@ import { CriarProdutoDTO, EditarProdutoDTO } from './produtos.types'
 import { CODIGOS_ERRO } from '../../utils/respostas/codigos-resposta'
 import { ProdutosRepository } from './produtos.repository'
 import { PRODUTOS_DIR } from '../../infra/upload/paths'
-import { editarFotosProduto, salvarFotosProduto } from '../../infra/upload/produtos.salvarfotos'
+import { editarFotosProduto as editarFotosProdutoFS, salvarFotosProduto } from '../../infra/upload/produtos.salvarfotos'
 import { excluirPasta } from '../../infra/filesystem/excluir-pasta'
 import { assertResultadoExiste } from '../../shared/asserts/assertResultadoBusca'
 import { ProdutoMaterialRepository } from './materiais/produtoMaterial.repository'
@@ -66,7 +66,7 @@ export class ProdutosService {
           const produto = await this.repository.listarProdutoPorCodigo(codigo)
           assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
 
-          await editarFotosProduto(codigo, fotos, PRODUTOS_DIR)
+          await editarFotosProdutoFS(codigo, fotos, PRODUTOS_DIR)
           return produto
      }
 

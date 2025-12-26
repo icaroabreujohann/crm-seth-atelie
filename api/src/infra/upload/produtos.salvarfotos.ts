@@ -10,15 +10,18 @@ export const salvarFotosProduto = async (codigo: string, fotos: Express.Multer.F
      criaPastaSeNaoExistir(pastaProduto)
 
      await Promise.all([
-          fotos.map((foto, index) => {
+          ...fotos.map((foto, index) => {
                const ext = path.extname(foto.originalname)
                const nomeArquivo = `${index + 1}${ext}`
-
                const destino = path.join(pastaProduto, nomeArquivo)
-               return fs.rename(foto.path, destino)
+
+               return Promise.all([
+                    fs.copyFile(foto.path, destino),
+                    fs.unlink(foto.path),
+               ])
           }),
 
-          await excluirArquivosPasta(PRODUTOS_TMP_DIR)
+          excluirArquivosPasta(PRODUTOS_TMP_DIR)
      ]
      )
 }
@@ -28,20 +31,24 @@ export const editarFotosProduto = async (codigo: string, fotos: Express.Multer.F
      criaPastaSeNaoExistir(pastaProduto)
 
      const arquivosExistentes = await fs.readdir(pastaProduto)
-     await Promise.all([
-          arquivosExistentes.map((arquivo) => {
-               const caminhoArquivo = path.join(pastaProduto, arquivo)
-               return fs.unlink(caminhoArquivo)
-          }),
 
-          fotos.map((foto, index) => {
+     await Promise.all([
+          ...arquivosExistentes.map((arquivo) =>
+               fs.unlink(path.join(pastaProduto, arquivo))
+          ),
+
+          ...fotos.map((foto, index) => {
                const ext = path.extname(foto.originalname)
                const nomeArquivo = `${index + 1}${ext}`
-
                const destino = path.join(pastaProduto, nomeArquivo)
-               return fs.rename(foto.path, destino)
+
+               return Promise.all([
+                    fs.copyFile(foto.path, destino),
+                    fs.unlink(foto.path),
+               ])
           }),
 
-          await excluirArquivosPasta(PRODUTOS_TMP_DIR)
+          excluirArquivosPasta(PRODUTOS_TMP_DIR),
      ])
+
 }

@@ -53,7 +53,7 @@ export class ProdutosController {
           const codigo = res.locals.codigo
 
           const fotos = (req.files as Express.Multer.File[]) ?? []
-          
+          console.log('FOTOS DO CONTROLLER', fotos.length)
           const fotosEditadas = await this.service.editarFotosProduto(codigo, fotos)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.PRODUTO_EDITAR_FOTOS_SUCESS, fotosEditadas)
      }

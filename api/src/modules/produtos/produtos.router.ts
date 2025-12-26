@@ -15,7 +15,7 @@ router.get('/:codigo/completo', validaCodigoParam, controller.listarProdutoCompl
 router.get('/:codigo', validaCodigoParam, controller.listarProdutoCodigo)
 router.post('/', uploadProdutos.array('fotos'), controller.criarProduto)
 router.patch('/:codigo', validaCodigoParam, controller.editarProduto)
-router.post('/:codigo/fotos', uploadProdutos.array('fotos'), controller.editarFotosProduto)
+router.post('/:codigo/fotos', validaCodigoParam, uploadProdutos.array('fotos'), controller.editarFotosProduto)
 router.delete('/:codigo', validaCodigoParam, controller.excluirProduto)
 
 router.get('/:codigo/materiais', validaCodigoParam, controllerMateriais.listarPorProduto)
