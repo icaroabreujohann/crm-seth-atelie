@@ -64,13 +64,13 @@
 <script lang="ts" setup>
 import { ref, computed, watch, onMounted } from 'vue'
 import type { MaterialCompleto, MaterialForm } from '@/modules/materiais/materiais.types';
-import { useAuxiliaresStore } from '@/stores/auxiliares.store';
+import { usarAuxiliaresStore } from '@/stores/auxiliares.store';
 
 import { HugeiconsIcon } from '@hugeicons/vue';
 import { UserAdd01Icon, UserEdit01Icon } from '@hugeicons/core-free-icons';
 import { storeToRefs } from 'pinia';
 
-const auxiliaresStore = useAuxiliaresStore()
+const auxiliaresStore = usarAuxiliaresStore()
 const { tiposMaterial, unidadesMedida } = storeToRefs(auxiliaresStore)
 
 const props = defineProps<{

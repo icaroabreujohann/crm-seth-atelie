@@ -15,6 +15,7 @@ declare module 'vue' {
     ConfirmaExclusao: typeof import('./components/common/ConfirmaExclusao.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     MaterialFormDialog: typeof import('./components/MaterialFormDialog.vue')['default']
+    MaterialSelectDialog: typeof import('./components/MaterialSelectDialog.vue')['default']
     MenuAcoes: typeof import('./components/common/MenuAcoes.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

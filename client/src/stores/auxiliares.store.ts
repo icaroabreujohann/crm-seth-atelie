@@ -7,7 +7,7 @@ interface AuxiliaresState {
      unidadesMedida: UnidadeMedida[]
 }
 
-export const useAuxiliaresStore = defineStore('auxiliares', {
+export const usarAuxiliaresStore = defineStore('auxiliares', {
      state: ():AuxiliaresState => ({
           tiposMaterial: [],
           unidadesMedida: []

@@ -24,6 +24,8 @@
                </v-card>
           </v-col>
      </v-row>
+
+     <MaterialSelectDialog v-model="dialogMaterialSelect"/>
 </template>
 
 <script lang="ts" setup>
@@ -36,9 +38,11 @@ import { HugeiconsIcon } from '@hugeicons/vue';
 import { Money03Icon, Search02Icon } from '@hugeicons/core-free-icons';
 import { substituiPontoPorVirgula } from '@/utils/substituirPontoPorVirgula';
 
+import MaterialSelectDialog from '@/components/MaterialSelectDialog.vue';
 
 const produtos = ref<Produto[]>([])
 
+const dialogMaterialSelect = ref(true)
 
 async function listarProdutos() {
      const response = await ProdutosServices.listar()
