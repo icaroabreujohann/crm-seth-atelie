@@ -4,6 +4,7 @@ import { gerenciadorMensagens } from '../../utils/respostas/gerenciador-resposta
 import { CODIGOS_SUCESSO } from '../../utils/respostas/codigos-resposta'
 import { CriarProdutoDTO, EditarProdutoDTO } from './produtos.types'
 import { validaRequisicao } from '../../shared/validators/valida.requisicao'
+import { converteFotosParaWEBP } from '../../middlewares/converte-fotos'
 
 export class ProdutosController {
      private service = new ProdutosService()
@@ -33,8 +34,8 @@ export class ProdutosController {
           validaRequisicao(data, ['nome', 'preco'])
           
           const fotos = (req.files as Express.Multer.File[]) ?? []
-
-          const produtoCriado = await this.service.criarProduto(data, fotos)
+          const fotosConvertidas = await converteFotosParaWEBP(fotos)
+          const produtoCriado = await this.service.criarProduto(data, fotosConvertidas)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.PRODUTO_CRIAR_SUCESS, produtoCriado)
      }
 
@@ -53,8 +54,8 @@ export class ProdutosController {
           const codigo = res.locals.codigo
 
           const fotos = (req.files as Express.Multer.File[]) ?? []
-          console.log('FOTOS DO CONTROLLER', fotos.length)
-          const fotosEditadas = await this.service.editarFotosProduto(codigo, fotos)
+          const fotosConvertidas = await converteFotosParaWEBP(fotos)
+          const fotosEditadas = await this.service.editarFotosProduto(codigo, fotosConvertidas)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.PRODUTO_EDITAR_FOTOS_SUCESS, fotosEditadas)
      }
 

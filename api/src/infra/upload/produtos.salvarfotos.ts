@@ -4,21 +4,18 @@ import { criaPastaSeNaoExistir } from './produtos.multer'
 import { excluirPasta } from '../filesystem/excluir-pasta'
 import { PRODUTOS_TMP_DIR } from './paths'
 import { excluirArquivosPasta } from '../filesystem/excluir-arquivos-pasta'
+import { FotoWEBP } from '../../middlewares/converte-fotos'
 
-export const salvarFotosProduto = async (codigo: string, fotos: Express.Multer.File[], caminho: string) => {
+export const salvarFotosProduto = async (codigo: string, fotos: FotoWEBP[], caminho: string) => {
      const pastaProduto = path.join(caminho, codigo)
      criaPastaSeNaoExistir(pastaProduto)
 
      await Promise.all([
           ...fotos.map((foto, index) => {
-               const ext = path.extname(foto.originalname)
-               const nomeArquivo = `${index + 1}${ext}`
+               const nomeArquivo = `${index + 1}.webp`
                const destino = path.join(pastaProduto, nomeArquivo)
 
-               return Promise.all([
-                    fs.copyFile(foto.path, destino),
-                    fs.unlink(foto.path),
-               ])
+               return fs.writeFile(destino, foto.buffer)
           }),
 
           excluirArquivosPasta(PRODUTOS_TMP_DIR)
@@ -26,7 +23,7 @@ export const salvarFotosProduto = async (codigo: string, fotos: Express.Multer.F
      )
 }
 
-export const editarFotosProduto = async (codigo: string, fotos: Express.Multer.File[], caminho: string) => {
+export const editarFotosProduto = async (codigo: string, fotos: FotoWEBP[], caminho: string) => {
      const pastaProduto = path.join(caminho, codigo)
      criaPastaSeNaoExistir(pastaProduto)
 
@@ -38,14 +35,10 @@ export const editarFotosProduto = async (codigo: string, fotos: Express.Multer.F
           ),
 
           ...fotos.map((foto, index) => {
-               const ext = path.extname(foto.originalname)
-               const nomeArquivo = `${index + 1}${ext}`
+               const nomeArquivo = `${index + 1}.webp`
                const destino = path.join(pastaProduto, nomeArquivo)
 
-               return Promise.all([
-                    fs.copyFile(foto.path, destino),
-                    fs.unlink(foto.path),
-               ])
+               return fs.writeFile(destino, foto.buffer)
           }),
 
           excluirArquivosPasta(PRODUTOS_TMP_DIR),

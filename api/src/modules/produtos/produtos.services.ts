@@ -7,6 +7,7 @@ import { editarFotosProduto as editarFotosProdutoFS, salvarFotosProduto } from '
 import { excluirPasta } from '../../infra/filesystem/excluir-pasta'
 import { assertResultadoExiste } from '../../shared/asserts/assertResultadoBusca'
 import { ProdutoMaterialRepository } from './materiais/produtoMaterial.repository'
+import { FotoWEBP } from '../../middlewares/converte-fotos'
 
 
 export class ProdutosService {
@@ -46,7 +47,7 @@ export class ProdutosService {
           return produtoCompleto
      }
 
-     async criarProduto(data: CriarProdutoDTO, fotos: Express.Multer.File[]) {
+     async criarProduto(data: CriarProdutoDTO, fotos: FotoWEBP[]) {
           const codigo: string = await this.gerarCodigoProdutoUnico()
           const fotos_url = `${PRODUTOS_DIR_API}/${codigo}`
 
@@ -62,7 +63,7 @@ export class ProdutosService {
           return await this.repository.editar(produto.data.id, data)
      }
 
-     async editarFotosProduto(codigo: string, fotos: Express.Multer.File[]) {
+     async editarFotosProduto(codigo: string, fotos: FotoWEBP[]) {
           const produto = await this.repository.listarProdutoPorCodigo(codigo)
           assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
           await editarFotosProdutoFS(codigo, fotos, PRODUTOS_DIR)

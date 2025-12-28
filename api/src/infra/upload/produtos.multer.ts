@@ -1,19 +1,15 @@
 import fs from 'fs'
 import multer from 'multer'
-import { PRODUTOS_TMP_DIR } from './paths'
-import path from 'path'
-import { randomUUID } from 'crypto'
-
 export const criaPastaSeNaoExistir = (caminho: string) => {
      if (!fs.existsSync(caminho)) fs.mkdirSync(caminho, { recursive: true })
 }
 
 export const uploadProdutos = multer({
-     storage: multer.diskStorage({
-          destination: PRODUTOS_TMP_DIR,
-          filename: (req, file, cb) => {
-               const ext = path.extname(file.originalname)
-               cb(null, `${randomUUID()}${ext}`)
+     storage: multer.memoryStorage(),
+     fileFilter: (req, file, cb) => {
+          if (!file.mimetype.startsWith('image/')) {
+               return cb(new Error('Arquivo inválido'))
           }
-     })
+          cb(null, true)
+     }
 })
