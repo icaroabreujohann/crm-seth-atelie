@@ -6,10 +6,23 @@ function produtoPayloadToFormData(form: ProdutoPayload): FormData {
      const formData = new FormData()
 
      formData.append('nome', form.nome)
-     if (form.preco) formData.append('preco', form.preco.toString())
+     if (form.preco !== null) formData.append('preco', form.preco.toString())
      if (form.tempo_medio) formData.append('tempo_medio', form.tempo_medio)
      if (form.fotos) {
           form.fotos.forEach((foto) => {
+               if (foto instanceof File) {
+                    formData.append('fotos', foto, foto.name)
+               }
+          })
+     }
+
+     return formData
+}
+
+function produtoFotosToFormData(fotos: File[] | null): FormData {
+     const formData = new FormData()
+     if (fotos) {
+          fotos.forEach((foto) => {
                if (foto instanceof File) {
                     formData.append('fotos', foto, foto.name)
                }
@@ -27,14 +40,21 @@ async function criar(payload: ProdutoPayload) {
 }
 
 async function editar(codigo: string, payload: ProdutoPayload) {
-     const formData = produtoPayloadToFormData(payload)
+     const { fotos, ...produtoPayload } = payload
 
-     const { data } = await api.patch<RespostaApi<Produto>>(`/produtos/${codigo}`, formData)
+     const { data } = await api.patch<RespostaApi<Produto>>(
+          `/produtos/${codigo}`,
+          produtoPayload
+     )
+
+     if (fotos?.length) {
+          const fotosFormData = produtoFotosToFormData(fotos)
+          await api.post(`/produtos/${codigo}/fotos`, fotosFormData)
+     }
+
      return data.data
 }
-
 export const ProdutosServices = {
-
      async listar(): Promise<Produto[]> {
           const { data } = await api.get<RespostaApi<Produto[]>>('/produtos')
 
