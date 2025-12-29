@@ -1,16 +1,16 @@
 import { sql } from "../../config/db";
 import { ResultadoBusca } from "../../shared/types";
 import { resultadoEncontrado, resultadoInexistente } from '../../utils/resultadoBusca'
-import { CriarProdutoDTO, EditarProdutoDTO, Produto } from "./produtos.types";
+import { CriarProdutoDB, CriarProdutoDTO, EditarProdutoDB, EditarProdutoDTO, ProdutoDB } from "./produtos.types";
 import { normalizaTexto } from "../../utils/normalizadores";
 
 export class ProdutosRepository {
-     async listar(): Promise<Produto[]> {
+     async listar(): Promise<ProdutoDB[]> {
           return await sql`select * from produtos`
      }
 
-     async listarProdutoPorCodigo(codigo: string): Promise<ResultadoBusca<Produto>> {
-          const [produto] = await sql<Produto[]>`
+     async listarProdutoPorCodigo(codigo: string): Promise<ResultadoBusca<ProdutoDB>> {
+          const [produto] = await sql<ProdutoDB[]>`
                select * from produtos
                where codigo = ${codigo}
                limit 1
@@ -19,8 +19,8 @@ export class ProdutosRepository {
           return produto ? resultadoEncontrado(produto) : resultadoInexistente()
      }
 
-     async listarProdutoPorId(id: number): Promise<ResultadoBusca<Produto>> {
-          const [produto] = await sql<Produto[]>`
+     async listarProdutoPorId(id: number): Promise<ResultadoBusca<ProdutoDB>> {
+          const [produto] = await sql<ProdutoDB[]>`
                select * from produtos
                where id = ${id}
                limit 1
@@ -29,14 +29,14 @@ export class ProdutosRepository {
           return produto ? resultadoEncontrado(produto) : resultadoInexistente()
      }
 
-     async criar(data: CriarProdutoDTO): Promise<Produto | null> {
-          const [produto] = await sql<Produto[]>`
+     async criar(data: CriarProdutoDB): Promise<ProdutoDB | null> {
+          const [produto] = await sql<ProdutoDB[]>`
                insert into produtos(nome, codigo, preco, tempo_medio, fotos_url)
                values(
                     ${data.nome},
                     ${data.codigo},
                     ${data.preco},
-                    ${normalizaTexto(data.tempo_medio)},
+                    ${(data.tempo_medio)},
                     ${data.fotos_url}
                )
                returning *
@@ -45,13 +45,13 @@ export class ProdutosRepository {
           return produto ?? null
      }
 
-     async editar(id: number, data: EditarProdutoDTO): Promise<Produto | null> {
-          const [produto] = await sql<Produto[]>`
+     async editar(id: number, data: EditarProdutoDB): Promise<ProdutoDB | null> {
+          const [produto] = await sql<ProdutoDB[]>`
                update produtos
                set
                     nome        = coalesce(${data.nome}, nome),
                     preco       = coalesce(${data.preco}, preco),
-                    tempo_medio = coalesce(${normalizaTexto(data.tempo_medio)}, tempo_medio),
+                    tempo_medio = coalesce(${(data.tempo_medio)}, tempo_medio),
                     data_alteracao = now()
                where id = ${id}
                returning *
@@ -60,8 +60,8 @@ export class ProdutosRepository {
           return produto ?? null
      }
 
-     async excluir(id: number): Promise<Produto | null> {
-          const [produtoExcluido] = await sql<Produto[]>`
+     async excluir(id: number): Promise<ProdutoDB | null> {
+          const [produtoExcluido] = await sql<ProdutoDB[]>`
                delete from produtos
                where id = ${id}
                returning *

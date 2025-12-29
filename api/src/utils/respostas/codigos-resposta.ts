@@ -4,6 +4,8 @@ export const CODIGOS_ERRO = {
      DADO_TIPO_INVALIDO: { codigo: 1002, mensagem: 'O tipo do dado enviado é inválido' },
      ID_INVALIDO: { codigo: 1003, mensagem: 'O ID enviado é inválido' },
      CODIGO_INVALIDO: { codigo: 1004, mensagem: 'O Código enviado é inválido' },
+     MINUTOS_INVALIDOS: { codigo: 1005, mensagem: 'Os minutos enviados são inválidos' },
+     HORAS_INVALIDAS: { codigo: 1006, mensagem: 'As horas enviadas são inválidas' },
 
      CLIENTE_LISTAR_ERR: { codigo: 1100, mensagem: 'Erro ao listar clientes' },
      CLIENTE_EXISTE_ERR: { codigo: 1101, mensagem: 'O Cliente já está registrado.' },
