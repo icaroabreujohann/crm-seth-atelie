@@ -37,7 +37,7 @@
                          </div>
                          <div v-if="produto.tempo_medio">
                               <p class="subText">Tempo Médio</p>
-                              <h1 class="f-regular">{{ produto.tempo_medio }}h</h1>
+                              <h1 class="f-regular">{{ produto.tempo_medio.horas }}h{{ produto.tempo_medio.minutos }}m</h1>
                          </div>
                     </div>
                </v-card>

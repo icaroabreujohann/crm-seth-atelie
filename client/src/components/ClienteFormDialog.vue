@@ -97,4 +97,11 @@ watch(
      { immediate: true }
 )
 
+watch(dialog, (aberto) => {
+     if (!aberto) {
+          formClienteRef.value = { ...formClienteDefault }
+          vFormRef.value?.resetValidation()
+     }
+})
+
 </script>

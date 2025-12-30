@@ -22,8 +22,12 @@
                          </v-col>
                          <v-col cols="6">
                               <p>Tempo Médio</p>
-                              <v-text-field variant="solo-filled" v-mask="'##:##'" suffix="Horas"
-                                   v-model="formProdutoRef.tempo_medio" />
+                              <div class="d-flex ga-2">
+                                   <v-text-field class="w-50" variant="solo-filled" suffix="h" type="number" min="0"
+                                        hide-spin-buttons v-model="formProdutoRef.tempo_medio.horas" />
+                                   <v-text-field class="w-50" variant="solo-filled" suffix="m" type="number" min="0"
+                                        max="59" hide-spin-buttons v-model="formProdutoRef.tempo_medio.minutos" :rules="formRegras.minutos_maximos" />
+                              </div>
                          </v-col>
                     </v-row>
                     <v-row>
@@ -50,10 +54,10 @@
                     <v-row class="mt-5">
                          <v-col cols="6">
                               <v-btn class="w-100" color="main" @click="onSalvar">{{ modoEditar ? 'Editar' : 'Criar'
-                                   }}</v-btn>
+                              }}</v-btn>
                          </v-col>
                          <v-col cols="6">
-                              <v-btn class="w-100" variant="tonal">Cancelar</v-btn>
+                              <v-btn class="w-100" variant="tonal" @click="dialog = false">Cancelar</v-btn>
                          </v-col>
                     </v-row>
                </v-form>
@@ -89,14 +93,18 @@ const formProdutoDefault: ProdutoForm = {
      codigo: '',
      nome: '',
      preco: 0,
-     tempo_medio: '',
+     tempo_medio: {
+          horas: 0,
+          minutos: 0
+     },
      fotos: [],
 }
 const vFormRef = ref()
 const formProdutoRef = ref<ProdutoForm>({ ...formProdutoDefault })
 
 const formRegras = {
-     obrigatorio: [(v: string) => !!v || 'Campo obrigatório']
+     obrigatorio: [(v: string) => !!v || 'Campo obrigatório'],
+     minutos_maximos: [(v: number) => v <= 59 || 'Máximo de 59 minutos.']
 }
 
 const formProdutoFotosPreview = computed(() =>
@@ -125,4 +133,12 @@ watch(
                } : { ...formProdutoDefault }
      }, { immediate: true }
 )
+
+watch(dialog, (aberto) => {
+     if (!aberto) {
+          formProdutoRef.value = { ...formProdutoDefault }
+          vFormRef.value?.resetValidation()
+     }
+})
+
 </script>

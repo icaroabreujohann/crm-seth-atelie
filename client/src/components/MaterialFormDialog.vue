@@ -132,6 +132,13 @@ watch(
 
 )
 
+watch(dialog, (aberto) => {
+     if (!aberto) {
+          formMaterialRef.value = { ...formMaterialDefault }
+          vFormRef.value?.resetValidation()
+     }
+})
+
 onMounted(async () => {
      await auxiliaresStore.carregar()
 })

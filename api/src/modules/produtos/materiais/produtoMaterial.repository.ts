@@ -1,7 +1,6 @@
 import { sql } from '../../../config/db'
 import { ResultadoBusca } from '../../../shared/types';
 import { resultadoEncontrado, resultadoInexistente } from '../../../utils/resultadoBusca';
-import { Produto } from '../produtos.types';
 import { CriarProdutoMaterialRepoDTO, EditarProdutoMaterialRepoDTO, ProdutoMaterial } from './produtoMaterial.types';
 
 export class ProdutoMaterialRepository {

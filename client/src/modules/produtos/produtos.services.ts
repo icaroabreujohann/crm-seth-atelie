@@ -7,11 +7,14 @@ function produtoPayloadToFormData(form: ProdutoPayload): FormData {
 
      formData.append('nome', form.nome)
      if (form.preco !== null) formData.append('preco', form.preco.toString())
-     if (form.tempo_medio) formData.append('tempo_medio', form.tempo_medio)
+     if (form.tempo_medio) {
+          formData.append('tempo_medio[horas]', form.tempo_medio.horas.toString())
+          formData.append('tempo_medio[minutos]', form.tempo_medio.minutos.toString())
+     }
      if (form.fotos) {
           form.fotos.forEach((foto) => {
                if (foto instanceof File) {
-                    formData.append('fotos', foto, foto.name)
+                    formData.append('fotos', foto)
                }
           })
      }

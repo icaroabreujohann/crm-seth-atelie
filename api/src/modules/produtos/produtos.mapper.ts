@@ -22,8 +22,8 @@ export const mapCriarProdutoDTOParaDB = (
      codigo,
      fotos_url,
      tempo_medio: converteHorasParaMinutos(
-          data.tempo_medio.horas,
-          data.tempo_medio.minutos
+          Number(data.tempo_medio.horas),
+          Number(data.tempo_medio.minutos)
      )
 })
 
