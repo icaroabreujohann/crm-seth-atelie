@@ -29,7 +29,6 @@ export class ProdutosController {
      }
 
      criarProduto = async (req: Request, res: Response) => {
-          console.log('redbody criar',req.body)
           const data: CriarProdutoDTO = req.body
           validaRequisicao(data, ['nome', 'preco'])
           

@@ -18,6 +18,7 @@ declare module 'vue' {
     MaterialSelectDialog: typeof import('./components/MaterialSelectDialog.vue')['default']
     MenuAcoes: typeof import('./components/common/MenuAcoes.vue')['default']
     ProdutoFormDialog: typeof import('./components/ProdutoFormDialog.vue')['default']
+    Remove: typeof import('./components/Remove.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

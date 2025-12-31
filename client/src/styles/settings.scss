@@ -171,3 +171,8 @@ canvas {
      text-overflow: ellipsis;
 }
 
+.v-carousel .v-window__prev,
+.v-carousel .v-window__next {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+}

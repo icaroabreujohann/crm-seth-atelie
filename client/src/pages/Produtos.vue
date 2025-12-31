@@ -15,7 +15,7 @@
      </div>
      <v-row class="mt-10">
           <v-col cols="12" xl="4" lg="6" v-for="(produto, index) in produtos">
-               <v-card class="pa-5">
+               <v-card class="pa-5" @click="abrirEditar(produto)">
                     <div class="d-flex">
                          <div class="mr-3">
                               <v-img width="100" height="100" cover
@@ -44,25 +44,25 @@
           </v-col>
      </v-row>
 
-     <ProdutoFormDialog :produto="produtoSelecionado" v-model="dialogProdutoForm" @salvo="salvarProduto" />
+     <ProdutoFormDialog v-model="dialogProdutoForm" @salvo="salvarProduto"/>
 </template>
 
 <script lang="ts" setup>
 import { ProdutosServices } from '@/modules/produtos/produtos.services';
-import type { Produto, ProdutoForm } from '@/modules/produtos/produtos.types';
+import type { ProdutoView, ProdutoForm } from '@/modules/produtos/produtos.types';
 import { onMounted, ref } from 'vue';
 import { usarFeedbackStore } from '@/stores/feedbacks.store';
 
 import { HugeiconsIcon } from '@hugeicons/vue';
-import { BarCode01Icon, Clock04Icon, Money03Icon, QrCode01Icon, Search02Icon } from '@hugeicons/core-free-icons';
+import { QrCode01Icon, Search02Icon } from '@hugeicons/core-free-icons';
 import { substituiPontoPorVirgula } from '@/utils/substituirPontoPorVirgula';
 import ProdutoFormDialog from '@/components/ProdutoFormDialog.vue';
 import { api } from '@/plugins/api';
 
 const feedback = usarFeedbackStore()
 
-const produtos = ref<Produto[]>([])
-const produtoSelecionado = ref<Produto | null>(null)
+const produtos = ref<ProdutoView[]>([])
+const produtoSelecionado = ref<ProdutoView | null>(null)
 
 const dialogProdutoForm = ref(true)
 
@@ -84,7 +84,7 @@ function abrirCriar() {
      dialogProdutoForm.value = true
 }
 
-function abrirEditar(produto: Produto) {
+function abrirEditar(produto: ProdutoView) {
      produtoSelecionado.value = produto
      dialogProdutoForm.value = true
 }
