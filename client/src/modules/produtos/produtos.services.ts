@@ -71,6 +71,11 @@ export const ProdutosServices = {
           return data.data
      },
 
+     async listarPorCodigo(codigo: string): Promise<ProdutoView> {
+          const { data } = await api.get<RespostaApi<ProdutoView>>(`/produtos/${codigo}/completo`)
+          return data.data
+     },
+
      async salvar(form: ProdutoForm): Promise<ProdutoView> {
           const payload: ProdutoPayload = {
                nome: form.nome,

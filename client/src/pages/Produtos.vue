@@ -44,7 +44,7 @@
           </v-col>
      </v-row>
 
-     <ProdutoFormDialog v-model="dialogProdutoForm" @salvo="salvarProduto"/>
+     <ProdutoFormDialog v-model="dialogProdutoForm" @salvo="salvarProduto" :produto="produtoSelecionado"/>
 </template>
 
 <script lang="ts" setup>
@@ -69,7 +69,6 @@ const dialogProdutoForm = ref(true)
 async function listarProdutos() {
      const response = await ProdutosServices.listar()
      produtos.value = response
-     console.log(response)
 }
 
 async function salvarProduto(produto: ProdutoForm) {
@@ -84,9 +83,10 @@ function abrirCriar() {
      dialogProdutoForm.value = true
 }
 
-function abrirEditar(produto: ProdutoView) {
-     produtoSelecionado.value = produto
-     dialogProdutoForm.value = true
+async function abrirEditar(produto: ProdutoView) {
+const produtoCompleto = await ProdutosServices.listarPorCodigo(produto.codigo)
+produtoSelecionado.value = produtoCompleto
+  dialogProdutoForm.value = true
 }
 
 onMounted(() => {
