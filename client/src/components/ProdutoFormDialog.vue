@@ -226,15 +226,27 @@ function removerMaterial(codigo: string) {
 
 function onMaterialSelect(codigos: string[]) {
      const anteriores = new Map(
-          formProdutoRef.value.materiais.map(m => [m.material_codigo, m.quantidade])
+          formProdutoRef.value.materiais.map(m => [
+               m.material_codigo,
+               m.quantidade
+          ])
+     )
+
+     const catologo = new Map(
+          materialStore.materiais.map(m => [
+               m.codigo,
+               m.quantidade ?? 1
+          ])
      )
 
      formProdutoRef.value.materiais = codigos.map(codigo => ({
           material_codigo: codigo,
-          quantidade: anteriores.get(codigo) ?? 1
+          quantidade:
+               anteriores.get(codigo) ??
+               catologo.get(codigo) ??
+               1
      }))
 }
-
 const dialogMaterialSelect = ref(false)
 const tabsProduto = ref<'tabProduto' | 'tabMaterial'>('tabProduto')
 
@@ -265,8 +277,7 @@ watch(
 
                }
                :
-               formProdutoRef.value = { ...formProdutoDefault },
-               console.log('form após o wathc', formProdutoRef.value)
+               formProdutoRef.value = { ...formProdutoDefault }
      },
      { immediate: true }
 )
