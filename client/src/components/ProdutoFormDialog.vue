@@ -9,7 +9,8 @@
                     </div>
                     <div class="d-flex justify-center">
                          <v-btn class="mr-2" color="main" @click="onSalvar">{{ modoEditar ? 'Salvar' : 'Criar'
-                              }}</v-btn>
+                         }}</v-btn>
+                         <v-btn class="mr-2" variant="tonal" color="light" @click="">Excluir</v-btn>
                          <v-btn variant="tonal" @click="dialog = false">Cancelar</v-btn>
                     </div>
                </div>
@@ -143,6 +144,7 @@ import { Tag01Icon, Link04Icon, PackageIcon, ImageDelete01Icon, Delete02Icon } f
 import { ref, watch, computed } from 'vue'
 import type { VForm } from 'vuetify/components'
 import { usarMaterialStore } from '@/stores/materiais.store'
+import { montarPayloadAlteracoes } from '@/utils/montarPayloadPatch'
 
 const props = defineProps<{
      produto?: ProdutoView | null,
@@ -174,6 +176,7 @@ const formProdutoDefault: ProdutoForm = {
 }
 const vFormRef = ref<VForm>()
 const formProdutoRef = ref<ProdutoForm>({ ...formProdutoDefault })
+const formProdutoRefOriginal = ref<ProdutoForm>({ ...formProdutoDefault })
 const formRegras = {
      obrigatorio: [(v: string) => !!v || 'Campo obrigatório'],
      minutos_maximos: [(v: number) => v <= 59 || 'Máximo de 59 minutos.']
@@ -252,7 +255,8 @@ const tabsProduto = ref<'tabProduto' | 'tabMaterial'>('tabProduto')
 
 async function onSalvar() {
      const formValido = await vFormRef.value?.validate()
-
+     const payload = montarPayloadAlteracoes<ProdutoForm>(formProdutoRef.value, formProdutoRefOriginal.value)
+     console.log('payload', payload)
      if (!formValido?.valid) return
      emit('salvo', { ...formProdutoRef.value })
 }
@@ -260,8 +264,8 @@ async function onSalvar() {
 watch(
      () => props.produto,
      (produto) => {
-          produto ?
-               formProdutoRef.value = {
+          const base: ProdutoForm = produto
+               ? {
                     codigo: produto.codigo,
                     nome: produto.nome,
                     preco: produto.preco,
@@ -274,12 +278,10 @@ watch(
                          material_codigo: m.codigo,
                          quantidade: Number(m.quantidade)
                     }))
-
-               }
-               :
-               formProdutoRef.value = { ...formProdutoDefault }
-     },
-     { immediate: true }
+               } : { ...formProdutoDefault }
+          formProdutoRef.value = base
+          formProdutoRefOriginal.value = structuredClone(base)
+     }
 )
 
 watch(dialog, (aberto) => {

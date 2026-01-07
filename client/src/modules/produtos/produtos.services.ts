@@ -49,7 +49,7 @@ async function criar(payload: ProdutoPayload) {
      return data.data
 }
 
-async function editar(codigo: string, payload: ProdutoPayload) {
+async function editar(codigo: string, payload: Partial<ProdutoPayload>) {
      const { fotos, ...produtoPayload } = payload
 
      const { data } = await api.patch<RespostaApi<ProdutoView>>(
