@@ -21,7 +21,7 @@ export const CODIGOS_ERRO = {
 
      PRODUTO_LIST_ERR: { codigo: 1301, mensagem: 'Erro ao listar produtos.' },
      PRODUTO_CRIAR_ERR: { codigo: 1302, mensagem: 'Erro ao criar produto.' },
-     PRODUTO_EDITAR_ERR: { codigo: 1303, mensagem: 'Erro ao criar produto.' },
+     PRODUTO_EDITAR_ERR: { codigo: 1303, mensagem: 'Erro ao editar produto.' },
      PRODUTO_EXCLUIR_ERR: { codigo: 1304, mensagem: 'Erro ao criar produto.' },
      PRODUTO_N_EXISTE_ERR: { codigo: 1305, mensagem: 'O produto não existe.' },
 

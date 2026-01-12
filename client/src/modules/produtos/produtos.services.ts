@@ -60,10 +60,7 @@ export const ProdutosServices = {
                materiais: form.materiais
           }
 
-          console.log('chegou no service', form)
-
           if (!form.codigo) { return await criar(payload) }
-
           return await editar(form.codigo, payload)
      },
 

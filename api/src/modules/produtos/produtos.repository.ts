@@ -45,6 +45,9 @@ export class ProdutosRepository {
      }
 
      async editar(id: number, data: EditarProdutoDB): Promise<ProdutoDB | null> {
+          if (!Object.keys(data).length) {
+               return null
+          }
           const [produto] = await sql<ProdutoDB[]>`
                update produtos
                set

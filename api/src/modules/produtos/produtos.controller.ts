@@ -30,7 +30,6 @@ export class ProdutosController {
 
      criarProduto = async (req: Request, res: Response) => {
           const data: CriarProdutoDTO = req.body
-          console.log('Criar Produto', data)
           validaRequisicao(data, ['nome', 'preco'])
 
           const fotos = (req.files as Express.Multer.File[]) ?? []
@@ -42,7 +41,6 @@ export class ProdutosController {
      editarProduto = async (req: Request, res: Response) => {
           const codigo = res.locals.codigo
           const data: EditarProdutoDTO = req.body
-          console.log('Editar Produto', data)
           const produtoEditado = await this.service.editarProduto(codigo, data)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.PRODUTO_EDITAR_SUCESS, produtoEditado)
      }

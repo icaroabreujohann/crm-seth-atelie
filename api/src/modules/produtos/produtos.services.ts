@@ -22,13 +22,13 @@ export class ProdutosService {
      ) { }
 
      private async gerarCodigoProdutoUnico(): Promise<string> {
-          let codigo = randomUUID()
-          let produtoExiste = await this.repository.listarProdutoPorCodigo(codigo)
+          let codigo: string
+          let produtoExiste
 
-          while (produtoExiste.existe) {
+          do {
                codigo = randomUUID()
                produtoExiste = await this.repository.listarProdutoPorCodigo(codigo)
-          }
+          } while (produtoExiste.existe)
 
           return codigo
      }
@@ -94,16 +94,22 @@ export class ProdutosService {
           const produto = await this.repository.listarProdutoPorCodigo(codigo)
           assertResultadoExiste(produto, CODIGOS_ERRO.PRODUTO_N_EXISTE_ERR, codigo)
 
-          const produtoMap = mapEditarProdutoDTOparaDB(data)
-          const produtoEditado = await this.repository.editar(produto.data.id, produtoMap)
-          assertPersistencia(produtoEditado, CODIGOS_ERRO.PRODUTO_EDITAR_ERR)
+          let produtoEditado
 
-          if (data.materiais) {
-               await this.excluirMateriaisDoProduto(produtoEditado.id)
-               await this.inserirMateriaisDoProduto(produtoEditado.id, data.materiais)
+          const produtoMap = mapEditarProdutoDTOparaDB(data)
+          if (Object.keys(produtoMap).length) {
+               const atualizado = await this.repository.editar(produto.data.id, produtoMap)
+               assertPersistencia(atualizado, CODIGOS_ERRO.PRODUTO_EDITAR_ERR)
+
+               produtoEditado = atualizado
           }
 
-          return produtoEditado
+          if (data.materiais) {
+               await this.excluirMateriaisDoProduto(produto.data.id)
+               await this.inserirMateriaisDoProduto(produto.data.id, data.materiais)
+          }
+
+          return produtoEditado ?? produto.data
      }
 
      async editarFotosProduto(codigo: string, fotos: FotoWEBP[]) {
