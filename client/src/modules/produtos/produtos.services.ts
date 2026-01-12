@@ -51,6 +51,11 @@ export const ProdutosServices = {
           return data.data
      },
 
+     async listarFotos(codigo: string): Promise<[]> {
+          const { data } = await api.get(`/arquivos/produtos/${codigo}`)
+          return data.data
+     },
+
      async salvar(form: Partial<ProdutoForm>): Promise<ProdutoView> {
           const payload: Partial<ProdutoPayload> = {
                nome: form.nome,
