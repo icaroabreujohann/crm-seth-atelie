@@ -23,7 +23,7 @@
                     </div>
                </div>
                <v-form ref="vFormRef">
-                    <v-tabs color="main" v-model="tabsProduto" align-tabs="center">
+                    <v-tabs color="main" v-model="abaAtiva" align-tabs="center">
                          <v-tab value="tabProduto">
                               <template #prepend>
                                    <HugeiconsIcon :size="20" :icon="Tag01Icon" />
@@ -38,7 +38,7 @@
                          </v-tab>
                     </v-tabs>
 
-                    <v-tabs-window v-model="tabsProduto">
+                    <v-tabs-window v-model="abaAtiva">
                          <v-tabs-window-item value="tabProduto">
                               <v-row>
                                    <v-col cols="7">
@@ -77,8 +77,9 @@
                                                        <template #prepend-inner>
                                                             <HugeiconsIcon class="opacity-50" :icon="Link04Icon" />
                                                        </template>
-                                                       <template #selection="{ fileNames}">
-                                                            <v-chip v-for="foto in fileNames" closable  @click:close="removerFoto(foto)">
+                                                       <template #selection="{ fileNames }">
+                                                            <v-chip v-for="foto in fileNames" closable
+                                                                 @click:close="removerFoto(foto)">
                                                                  {{ foto }}
                                                             </v-chip>
                                                        </template>
@@ -182,10 +183,13 @@ const { form, podeSalvar, regras, carregar, gerarPayloadPatch, resetar, removerF
 const { materiaisCodigos, materiaisExibicao, atualizarQuantidade, removerMaterial, selecionarMateriais } = useProdutoMateriais(form, computed(() => materialStore.materiais))
 
 const vFormRef = ref<VForm>()
-const tabsProduto = ref<'tabProduto' | 'tabMaterial'>('tabProduto')
+
 const produtoSelecionado = ref<ProdutoView | null>(null)
 const dialogMaterialSelect = ref(false)
 const dialogConfirmaExclusao = ref(false)
+
+type AbaProduto = 'produto' | 'material'
+const abaAtiva = ref<AbaProduto>('produto')
 
 const materiaisHeaders = computed(() => [
      { title: 'Material', key: 'nome' },

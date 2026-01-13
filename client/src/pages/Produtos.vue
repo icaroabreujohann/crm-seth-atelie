@@ -4,7 +4,7 @@
           <div class="d-flex align-end w-50 justify-end">
                <div class="w-50">
                     <v-text-field density="compact" class="mr-3" variant="solo-filled" label="Pesquise por um produto"
-                         prepend-inner-icon="mdi-account-search-outline" hide-details>
+                         prepend-inner-icon="mdi-account-search-outline" hide-details v-model="filtroProdutos">
                          <template #prepend-inner>
                               <HugeiconsIcon class="subText" :stroke-width="2" :size="20" :icon="Search02Icon" />
                          </template>
@@ -14,7 +14,7 @@
           </div>
      </div>
      <v-row class="mt-10">
-          <v-col cols="12" xl="4" lg="6" v-for="(produto, index) in produtos" :key="produto.codigo">
+          <v-col cols="12" xl="4" lg="6" v-for="(produto, index) in produtosFiltrados" :key="produto.codigo">
                <v-card class="pa-5" @click="abrirEditar(produto)">
                     <div class="d-flex">
                          <div class="mr-3">
@@ -63,7 +63,7 @@
 <script lang="ts" setup>
 import { ProdutosServices } from '@/modules/produtos/produtos.services';
 import type { ProdutoView, ProdutoForm } from '@/modules/produtos/produtos.types';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { usarFeedbackStore } from '@/stores/feedbacks.store';
 
 import { HugeiconsIcon } from '@hugeicons/vue';
@@ -71,11 +71,24 @@ import { ImageDelete01Icon, QrCode01Icon, Search02Icon } from '@hugeicons/core-f
 import { substituiPontoPorVirgula } from '@/utils/substituirPontoPorVirgula';
 import ProdutoFormDialog from '@/components/ProdutoFormDialog.vue';
 import { api } from '@/plugins/api';
+import { normalizarTextoBusca } from '@/utils/normalizarTextoBusca';
 
 const feedback = usarFeedbackStore()
 
 const produtos = ref<ProdutoView[]>([])
 const produtoSelecionado = ref<ProdutoView | null>(null)
+
+const filtroProdutos = ref<string>('')
+const produtosFiltrados = computed(() => {
+     if(!filtroProdutos.value || filtroProdutos.value == '') return produtos.value
+
+     const termos = normalizarTextoBusca(filtroProdutos.value).split(/\s+/)
+
+     return produtos.value.filter(p => {
+          const nome = normalizarTextoBusca(p.nome)
+          return termos.every(termo => nome.includes(termo))
+     })
+})
 
 const dialogProdutoForm = ref(false)
 

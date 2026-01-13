@@ -4,7 +4,7 @@
           <div class="d-flex align-end w-50 justify-end">
                <div class="w-50">
                     <v-text-field density="compact" class="mr-3" variant="solo-filled" label="Pesquise por um material"
-                         prepend-inner-icon="mdi-account-search-outline" hide-details>
+                         prepend-inner-icon="mdi-account-search-outline" hide-details v-model="filtroMateriais">
                          <template #prepend-inner>
                               <HugeiconsIcon class="subText" :stroke-width="2" :size="20" :icon="Search02Icon" />
                          </template>
@@ -14,7 +14,7 @@
           </div>
      </div>
 
-     <v-data-table :items="materiais" :headers="materiaisHeaders" item-key="codigo">
+     <v-data-table :items="materiaisFiltrados" :headers="materiaisHeaders" item-key="codigo">
           <template v-slot:item.unidade_medida_sigla="{ item }">
                <p>{{ item.unidade_medida_sigla.toUpperCase() }}</p>
           </template>
@@ -48,7 +48,8 @@ import ConfirmaExclusao from '@/components/common/ConfirmaExclusao.vue'
 import { HugeiconsIcon } from '@hugeicons/vue'
 import { Search02Icon } from '@hugeicons/core-free-icons'
 
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { normalizarTextoBusca } from '@/utils/normalizarTextoBusca'
 
 const feedback = usarFeedbackStore()
 
@@ -64,6 +65,18 @@ const materiaisHeaders = [
      { title: 'Ações', key: 'acoes', width: '10%' }
 ]
 const materialSelecionado = ref<MaterialCompleto | null>(null)
+
+const filtroMateriais = ref<string>('')
+const materiaisFiltrados = computed(() => {
+     if(!filtroMateriais.value || filtroMateriais.value == '') return materiais.value
+
+     const termos = normalizarTextoBusca(filtroMateriais.value).split(/\s+/)
+
+     return materiais.value.filter(m => {
+          const nome = normalizarTextoBusca(m.nome)
+          return termos.every(termo => nome.includes(termo))
+     })
+})
 
 const dialogFormMaterial = ref(false)
 const dialogConfirmaExclusao = ref(false)
