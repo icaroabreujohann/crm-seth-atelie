@@ -73,9 +73,14 @@
                                              <v-col cols="12">
                                                   <p>Fotos</p>
                                                   <v-file-input prepend-icon="" variant="solo-filled" hide-details
-                                                       multiple v-model="form.fotos" accept="image/*" chips>
+                                                       multiple v-model="form.fotos" accept="image/*">
                                                        <template #prepend-inner>
                                                             <HugeiconsIcon class="opacity-50" :icon="Link04Icon" />
+                                                       </template>
+                                                       <template #selection="{ fileNames}">
+                                                            <v-chip v-for="foto in fileNames" closable  @click:close="removerFoto(foto)">
+                                                                 {{ foto }}
+                                                            </v-chip>
                                                        </template>
                                                   </v-file-input>
                                              </v-col>
@@ -173,7 +178,7 @@ const dialog = computed({
 const modoEditar = computed(() => !!props.produto)
 const materialStore = usarMaterialStore()
 
-const { form, podeSalvar, regras, carregar, gerarPayloadPatch, resetar } = useProdutoForm()
+const { form, podeSalvar, regras, carregar, gerarPayloadPatch, resetar, removerFoto } = useProdutoForm()
 const { materiaisCodigos, materiaisExibicao, atualizarQuantidade, removerMaterial, selecionarMateriais } = useProdutoMateriais(form, computed(() => materialStore.materiais))
 
 const vFormRef = ref<VForm>()
@@ -194,6 +199,7 @@ const formProdutoFotosPreview = computed(() =>
           URL.createObjectURL(file)
      )
 )
+
 
 async function salvar() {
      const formValido = await vFormRef.value?.validate()

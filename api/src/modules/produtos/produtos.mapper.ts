@@ -34,7 +34,6 @@ export const mapEditarProdutoDTOparaDB = (
      if (data.nome !== undefined) {resultado.nome = data.nome}
      if (data.preco !== undefined) {resultado.preco = data.preco}
      
-     console.log('mapper', data)
      if (data.tempo_medio !== undefined) {
           resultado.tempo_medio = converteHorasParaMinutos(
                Number(data.tempo_medio.horas ?? 0),

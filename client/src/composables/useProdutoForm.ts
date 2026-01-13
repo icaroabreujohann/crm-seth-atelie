@@ -64,6 +64,10 @@ export function useProdutoForm() {
           carregar()
      }
 
+     function removerFoto(nome: string) {
+          form.value.fotos = form.value.fotos.filter(f => f.name !== nome) 
+     }
+
      return {
           form,
           regras,
@@ -71,7 +75,8 @@ export function useProdutoForm() {
           podeSalvar,
           carregar,
           gerarPayloadPatch,
-          resetar
+          resetar,
+          removerFoto
      }
 
 }

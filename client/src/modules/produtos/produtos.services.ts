@@ -32,7 +32,10 @@ async function editar(codigo: string, payload: Partial<ProdutoPayload>) {
 
      const { data } = await api.patch<RespostaApi<ProdutoView>>(`/produtos/${codigo}`, produtoPayload)
 
-     if (fotos?.length && data.sucesso) {
+     console.log('fotos', fotos)
+     console.log(!!fotos?.length)
+
+     if (fotos !== undefined && data.sucesso) {
           const fotosFormData = produtoFotosToFormData(fotos)
           await api.post(`/produtos/${codigo}/fotos`, fotosFormData)
      }
