@@ -5,6 +5,7 @@ import { EncomendasRepository } from './encomendas.repository'
 import { EncomendaMaterialService } from './materiais/encomendaMaterial.services'
 import { EncomendaMaterialCriarDTO } from './materiais/encomendaMaterialtypes'
 import { EncomendaMaterialRepository } from './materiais/encomendaMaterial.repository'
+import { EncomendaCriarDTO } from './encomendas.types'
 
 export class EncomendasServices {
      constructor(
@@ -46,5 +47,22 @@ export class EncomendasServices {
           assertResultadoExiste(encomenda, CODIGOS_ERRO.ENCOMENDA_N_EXISTE_ERR, codigo)
 
           return encomenda
+     }
+
+     async listarCompleto(codigo: string) {
+          const encomenda = await this.repository.listarPorCodigo(codigo)
+          assertResultadoExiste(encomenda, CODIGOS_ERRO.ENCOMENDA_N_EXISTE_ERR, codigo)
+
+          const materiais = await this.repositoryMateriais.listarMaterialPorEncomenda(encomenda.data.id)
+          const materiaisMapeados = materiais?.data ?? []
+
+          return {
+               ...encomenda,
+               materiais: materiaisMapeados
+          }
+     }
+
+     async criar(data: EncomendaCriarDTO) {
+          
      }
 }
