@@ -1,96 +1,87 @@
 import { sql } from '../../config/db'
-import { CriarEncomendaRepoDTO, EditarEncomendaDTO, Encomenda } from './encomendas.types'
-import { ResultadoBusca } from '../../shared/types'
-import { resultadoEncontrado, resultadoInexistente } from '../../utils/resultadoBusca'
-import { normalizaTexto, normalizaUndefined } from '../../utils/normalizadores'
+import { ResultadoBusca } from '../../shared/types';
+import { normalizaTexto } from '../../utils/normalizadores';
+import { resultadoEncontrado, resultadoInexistente } from '../../utils/resultadoBusca';
+import { EncomendaCriarDB, EncomendaView } from './encomendas.types';
 
 export class EncomendasRepository {
-    async listar(): Promise<Encomenda[]> {
-        return await sql<Encomenda[]>`
-            select
-                e.*,
-                c.nome as cliente_nome,
-                p.nome as produto_nome
+     async listar(): Promise<EncomendaView[]> {
+          return await sql<EncomendaView[]>`
+               select
+                    em.*,
+                    p.nome as produto_nome,
+                    c.nome as cliente_nome
+               from encomendas em
+               join produtos p
+                    on p.id = em.produto_id
+               join clientes c 
+                    on c.id = em.cliente_id
+               order by em.id desc
+          `
+     }
 
-            from encomendas e
-            join clientes c
-                on c.id = e.cliente_id
-            join produtos p
-                on p.id = e.produto_id
-        `
-    }
+     async listarPorId(id: number): Promise<ResultadoBusca<EncomendaView>> {
+          const [encomenda] = await sql<EncomendaView[]>`
+          select
+                    em.*,
+                    p.nome as produto_nome,
+                    c.nome as cliente_nome
+               from encomendas em
+               join produtos p
+                    on p.id = em.produto_id
+               join clientes c 
+                    on c.id = em.cliente_id
+               where em.id = ${id}
+          `
 
-    async listarEncomendaPorCodigo(codigo: string): Promise<ResultadoBusca<Encomenda>> {
-        const [encomenda] = await sql<Encomenda[]>`
-            select
-                e.*,
-                c.nome as cliente_nome,
-                p.nome as produto_nome
+          return encomenda ? resultadoEncontrado(encomenda) : resultadoInexistente()
+     }
 
-            from encomendas e
-            join clientes c
-                on c.id = e.cliente_id
-            join produtos p
-                on p.id = e.produto_id
-            where e.codigo = ${codigo}
-        `
-        return encomenda ? resultadoEncontrado(encomenda) : resultadoInexistente()
-    }
+     async listarPorCodigo(codigo: string): Promise<ResultadoBusca<EncomendaView>> {
+          const [encomenda] = await sql<EncomendaView[]>`
+          select
+                    em.*,
+                    p.nome as produto_nome,
+                    c.nome as cliente_nome
+               from encomendas em
+               join produtos p
+                    on p.id = em.produto_id
+               join clientes c 
+                    on c.id = em.cliente_id
+               where em.codigo = ${codigo}
+          `
 
-    async listarEncomendaPorId(id: number): Promise<ResultadoBusca<Encomenda>> {
-        const [encomenda] = await sql<Encomenda[]>`
-                        select * from encomendas
-                        where id = ${id}
-                   `
-        return encomenda ? resultadoEncontrado(encomenda) : resultadoInexistente()
-    }
+          return encomenda ? resultadoEncontrado(encomenda) : resultadoInexistente()
+     }
 
-    async criar(data: CriarEncomendaRepoDTO): Promise<ResultadoBusca<Encomenda>> {
-        const [encomenda] = await sql<Encomenda[]>`
-            insert into encomendas(codigo, cliente_id, produto_id, observacoes, pagamento_realizado, pagamento_forma,finalizado, entregue, local_entrega, data_pedido, data_prazo)
-            values (
-                ${data.codigo},
-                ${data.cliente_id},
-                ${data.produto_id},
-                ${normalizaTexto(data.observacoes)},
-                ${data.pagamento_realizado ?? false},
-                ${normalizaTexto(data.pagamento_forma)},
-                ${data.finalizado ?? false},
-                ${data.entregue ?? false},
-                ${normalizaTexto(data.local_entrega)},
-                ${(data.data_pedido ?? new Date())},
-                ${data.data_prazo}
-                )
-            returning *
-        `
-        return encomenda ? resultadoEncontrado(encomenda) : resultadoInexistente()
-    }
+     async criar(data: EncomendaCriarDB): Promise<EncomendaView | null> {
+          const [encomenda] = await sql<EncomendaView[]>`
+               insert into encomendas(codigo, cliente_id, produto_id, observacoes, pagamento_realizado, pagamento_forma,finalizado, entregue, local_entrega, data_pedido, data_prazo)
+               values (
+                    ${data.codigo},
+                    ${data.cliente_id},
+                    ${data.produto_id},
+                    ${normalizaTexto(data.observacoes)},
+                    ${data.pagamento_realizado ?? false},
+                    ${normalizaTexto(data.pagamento_forma)},
+                    ${data.finalizado ?? false},
+                    ${data.entregue ?? false},
+                    ${normalizaTexto(data.local_entrega)},
+                    ${(data.data_pedido ?? new Date())},
+                    ${data.data_prazo}
+                    )
+               returning *
+          `
+          return encomenda ?? null
+     }
 
-async editar(id: number, data: EditarEncomendaDTO): Promise<Encomenda | null> {
-    const [encomenda] = await sql<Encomenda[]>`
-        update encomendas
-        set observacoes         = COALESCE(${normalizaTexto(data.observacoes)}, observacoes),
-            pagamento_realizado = COALESCE(${normalizaUndefined(data.pagamento_realizado)}, pagamento_realizado),
-            pagamento_forma     = COALESCE(${normalizaTexto(data.pagamento_forma)}, pagamento_forma),
-            finalizado          = COALESCE(${normalizaUndefined(data.finalizado)}, finalizado),
-            entregue            = COALESCE(${normalizaUndefined(data.entregue)}, entregue),
-            local_entrega       = COALESCE(${normalizaTexto(data.local_entrega)}, local_entrega),
-            data_pedido         = COALESCE(${data.data_pedido}, data_pedido),
-            data_prazo          = COALESCE(${data.data_prazo}, data_prazo)
-        where id = ${id}
-        returning *
-    `
-    return encomenda ?? null
-}
+     async excluir(id: number): Promise<EncomendaView | null> {
+          const [encomenda] = await sql<EncomendaView[]>`
+               delete from encomendas
+               where id = ${id}
+               returning *
+          `
 
-
-    async excluir(id: number): Promise<Encomenda | null> {
-        const [encomenda] = await sql<Encomenda[]>`
-            delete from encomendas
-            where id = ${id}
-            returning *
-        `
-
-        return encomenda ?? null
-    }
+          return encomenda ?? null
+     }
 }
