@@ -1,7 +1,7 @@
 export interface ProdutoMaterialView {
      id: number,
      produto_id: number,
-     material_codigo: string,
+     codigo: string,
      material_id: number,
      material_nome: string,
      quantidade: number,
@@ -12,7 +12,7 @@ export interface ProdutoMaterialView {
 export interface ProdutoMaterialDB {
      id: number,
      produto_id: number,
-     material_codigo: string,
+     codigo: string,
      material_id: number,
      quantidade: number,
      preco_final: number

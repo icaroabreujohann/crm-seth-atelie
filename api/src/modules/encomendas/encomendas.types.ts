@@ -21,6 +21,7 @@ export interface EncomendaView {
     cliente_id: number,
     cliente_nome: string,
     produto_id: number,
+    produto_codigo: string,
     produto_nome: string,
     preco_final: number,
     observacoes: string | null,

@@ -8,6 +8,7 @@ export class EncomendasRepository {
      private selectEncomendaView = sql`
           select
                em.*,
+               p.codigo as produto_codigo,
                p.nome as produto_nome,
                c.nome as cliente_nome
           from encomendas em

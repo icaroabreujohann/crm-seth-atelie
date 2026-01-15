@@ -1,5 +1,7 @@
 import { normalizaTexto } from '../../utils/normalizadores'
+import { ProdutoMaterialView } from '../produtos/materiais/produtoMaterial.types'
 import { EncomendaCriarDTO, EncomendaCriarDB, EncomendaEditarDTO, EncomendaEditarDB } from './encomendas.types'
+import { EncomendaMaterialCriarDTO } from './materiais/encomendaMaterialtypes'
 
 export const mapEncomendaCriarDTOParaDB = (
      data: EncomendaCriarDTO,
@@ -62,3 +64,13 @@ export const mapEncomendaEditarDTOParaDB = (
      return resultado
 }
 
+export const mapProdutoMaterialParaEncomendaMaterial = (
+     data: ProdutoMaterialView[]
+): EncomendaMaterialCriarDTO[] => {
+     const materiaisMapeados = data.map(m => ({
+          material_codigo: m.codigo,
+          quantidade: m.quantidade
+     }))
+     console.log('map data',materiaisMapeados)
+     return materiaisMapeados
+}

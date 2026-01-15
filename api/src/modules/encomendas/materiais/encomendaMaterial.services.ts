@@ -14,6 +14,8 @@ export class EncomendaMaterialService {
           const encomenda = await this.repositoryEncomenda.listarPorId(encomenda_id)
           assertResultadoExiste(encomenda, CODIGOS_ERRO.ENCOMENDA_N_EXISTE_ERR, encomenda_id)
 
+          console.log(data)
+
           const material = await this.repositoryMaterial.listarMaterialPorCodigo(data.material_codigo)
           assertResultadoExiste(material, CODIGOS_ERRO.MATERIAL_N_EXISTE_ERR, data.material_codigo)
 
