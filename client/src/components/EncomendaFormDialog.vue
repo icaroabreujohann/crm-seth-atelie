@@ -30,7 +30,7 @@
                          </v-col>
                          <v-col cols="6">
                               <p>Produto</p>
-                              <v-select variant="solo-filled"></v-select>
+                              <v-text-field :model-value="produtoSelecionado?.nome || ''" readonly @click="dialogProdutoSelect = true" variant="solo-filled"></v-text-field>
                          </v-col>
                     </v-row>
                     <v-row>
@@ -76,20 +76,19 @@
      </v-dialog>
 
      <ClienteSelectDialog v-model="dialogClienteSelect" @select="selecionarCliente"/>
+     <ProdutoSelectDialog v-model="dialogProdutoSelect" @select="selecionarProduto"/>
 </template>
 
 <script setup lang="ts">
 import { useEncomendaForm } from '@/composables/useEncomendaForm';
 import type { EncomendaForm } from '@/modules/encomendas/encomendas.types';
-import { usarClienteStore } from '@/stores/clientes.store';
-import { usarMaterialStore } from '@/stores/materiais.store';
-import { usarProdutoStore } from '@/stores/produtos.store';
 import { HugeiconsIcon } from '@hugeicons/vue';
 import { CancelCircleIcon, Delete02Icon, PencilEdit02Icon, ShoppingCart02Icon, Tag01Icon } from '@hugeicons/core-free-icons';
 import { computed, ref } from 'vue';
 import ClienteSelectDialog from './ClienteSelectDialog.vue';
 import type { VForm } from 'vuetify/components';
 import type { Cliente } from '@/modules/clientes/clientes.types';
+import type { ProdutoView } from '@/modules/produtos/produtos.types';
 
 const props = defineProps<{
      encomenda?: EncomendaForm | null,
@@ -108,18 +107,24 @@ const dialog = computed({
 const vFormRef = ref<VForm>()
 
 const modoEditar = computed(() => !!props.encomenda)
-const materialStore = usarMaterialStore()
-const clienteStore = usarClienteStore()
-const produtosStore = usarProdutoStore()
 
 const { form, original, regras, carregar, podeSalvar, resetar } = useEncomendaForm()
 
 const dialogClienteSelect = ref(false)
+const dialogProdutoSelect = ref(false)
 
 const clienteSelecionado = ref<Cliente | null>(null)
+const produtoSelecionado = ref<ProdutoView | null>(null)
+
 function selecionarCliente(cliente: Cliente) {
      clienteSelecionado.value = cliente
      form.value.cliente_id = cliente.id
      dialogClienteSelect.value = false
+}
+
+function selecionarProduto(produto: ProdutoView){
+     produtoSelecionado.value = produto
+     form.value.produto_codigo = produto.codigo
+     dialogProdutoSelect.value = false
 }
 </script>

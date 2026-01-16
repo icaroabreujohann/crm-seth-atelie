@@ -5,7 +5,7 @@ export function useEncomendaForm() {
      const defaultForm: EncomendaForm = {
           codigo: '',
           cliente_id: 0,
-          produto_id: 0,
+          produto_codigo: '',
           observacoes: '',
           pagamento_realizado: false,
           pagamento_forma: '',
@@ -32,7 +32,7 @@ export function useEncomendaForm() {
           const base = {
                codigo: encomenda.codigo,
                cliente_id: encomenda.cliente_id,
-               produto_id: encomenda.produto_id,
+               produto_codigo: encomenda.produto_codigo,
                observacoes: encomenda.observacoes,
                pagamento_realizado: encomenda.pagamento_realizado,
                pagamento_forma: encomenda.pagamento_forma,

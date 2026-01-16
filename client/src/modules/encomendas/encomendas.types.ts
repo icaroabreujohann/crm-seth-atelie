@@ -36,7 +36,7 @@ export interface EncomendaView {
 export interface EncomendaForm {
     codigo?: string,
     cliente_id: number,
-    produto_id: number,
+    produto_codigo: string,
     observacoes: string,
     pagamento_realizado: boolean,
     pagamento_forma: string,
