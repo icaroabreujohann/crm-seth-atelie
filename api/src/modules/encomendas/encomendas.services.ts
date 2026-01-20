@@ -98,10 +98,13 @@ export class EncomendasServices {
           const encomendaExiste = await this.repository.listarPorCodigo(codigo)
           assertResultadoExiste(encomendaExiste, CODIGOS_ERRO.ENCOMENDA_N_EXISTE_ERR, codigo)
 
-          const encomendaMap = mapEncomendaEditarDTOParaDB(data)
+          let encomendaEditada
 
-          const encomendaEditada = await this.repository.editar(encomendaExiste.data.id, encomendaMap)
-          assertPersistencia(encomendaEditada, CODIGOS_ERRO.ENCOMENDA_EDITAR_ERR)
+          const encomendaMap = mapEncomendaEditarDTOParaDB(data)
+          if(Object.keys(encomendaMap).length){
+               encomendaEditada = await this.repository.editar(encomendaExiste.data.id, encomendaMap)
+               assertPersistencia(encomendaEditada, CODIGOS_ERRO.ENCOMENDA_EDITAR_ERR)
+          }
 
           if (data.materiais) {
                this.excluirMateriaisDaEncomenda(encomendaExiste.data.id)

@@ -15,8 +15,8 @@ export const CODIGOS_ERRO = {
 
      ENCOMENDA_LIST_ERR: { codigo: 1201, mensagem: 'Erro ao listar encomendas.' },
      ENCOMENDA_CRIAR_ERR: { codigo: 1202, mensagem: 'Erro ao criar encomenda.' },
-     ENCOMENDA_EDITAR_ERR: { codigo: 1203, mensagem: 'Erro ao criar encomenda.' },
-     ENCOMENDA_EXCLUIR_ERR: { codigo: 1204, mensagem: 'Erro ao criar encomenda.' },
+     ENCOMENDA_EDITAR_ERR: { codigo: 1203, mensagem: 'Erro ao editar encomenda.' },
+     ENCOMENDA_EXCLUIR_ERR: { codigo: 1204, mensagem: 'Erro ao excluir encomenda.' },
      ENCOMENDA_N_EXISTE_ERR: { codigo: 1205, mensagem: 'A encomenda não existe.' },
 
      PRODUTO_LIST_ERR: { codigo: 1301, mensagem: 'Erro ao listar produtos.' },

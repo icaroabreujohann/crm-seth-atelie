@@ -34,7 +34,7 @@ export class EncomendasController {
      editarEncomenda = async (req: Request, res: Response) => {
           const codigo = res.locals.codigo
           const data: EncomendaEditarDTO = req.body
-
+          console.log('data controller', data)
           const encomendaEditada = await this.services.editar(codigo, data)
           gerenciadorMensagens.enviarMensagemSucesso(res, 200, CODIGOS_SUCESSO.ENCOMENDA_EDITAR_SUCESS, encomendaEditada)
      }

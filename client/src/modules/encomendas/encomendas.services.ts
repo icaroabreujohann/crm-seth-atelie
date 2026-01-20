@@ -26,6 +26,7 @@ export const EncomendasServices = {
      },
 
      async salvar(form: Partial<EncomendaForm>) {
+          console.log('form', form)
           const payload: Partial<EncomendaPayload> = {
                cliente_id: form.cliente_id,
                produto_codigo: form.produto_codigo,
@@ -40,9 +41,7 @@ export const EncomendasServices = {
                materiais: form.materiais
           }
 
-          if (!form.codigo) {
-               return await criar(payload)
-          }
+          if (!form.codigo) { return await criar(payload) }
           return await editar(form.codigo, payload)
      },
 
