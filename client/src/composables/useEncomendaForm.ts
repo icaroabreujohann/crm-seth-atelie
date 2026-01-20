@@ -13,7 +13,8 @@ export function useEncomendaForm() {
           entregue: false,
           local_entrega: '',
           data_pedido: new Date(),
-          data_prazo: new Date()
+          data_prazo: new Date(),
+          materiais: []
      }
 
      const form = ref<EncomendaForm>(structuredClone(defaultForm))
@@ -40,7 +41,11 @@ export function useEncomendaForm() {
                entregue: encomenda.entregue,
                local_entrega: encomenda.local_entrega,
                data_pedido: encomenda.data_pedido,
-               data_prazo: encomenda.data_prazo
+               data_prazo: encomenda.data_prazo,
+               materiais: encomenda.materiais.map(m => ({
+                    material_codigo: m.codigo,
+                    quantidade: Number(m.quantidade)
+               }))
           }
           form.value = base
           original.value = base
@@ -50,7 +55,7 @@ export function useEncomendaForm() {
           () => JSON.stringify(form.value) != JSON.stringify(original.value)
      )
 
-     function resetar(){
+     function resetar() {
           carregar()
      }
 

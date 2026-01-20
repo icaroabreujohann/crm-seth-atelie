@@ -131,7 +131,7 @@
           </v-card>
      </v-dialog>
 
-     <MaterialSelectDialog v-model="dialogMaterialSelect" :materiaisDoProduto="materiaisCodigos"
+     <MaterialSelectDialog v-model="dialogMaterialSelect" :materiaisProps="materiaisCodigos"
           @select="selecionarMateriais" />
 
      <ConfirmaExclusao v-model="dialogConfirmaExclusao" v-if="produtoSelecionado"
@@ -180,7 +180,7 @@ const modoEditar = computed(() => !!props.produto)
 const materialStore = usarMaterialStore()
 
 const { form, podeSalvar, regras, carregar, gerarPayloadPatch, resetar, removerFoto } = useProdutoForm()
-const { materiaisCodigos, materiaisExibicao, atualizarQuantidade, removerMaterial, selecionarMateriais } = useProdutoMateriais(form, computed(() => materialStore.materiais))
+const { materiaisCodigos, materiaisHeaders, materiaisExibicao, atualizarQuantidade, removerMaterial, selecionarMateriais } = useProdutoMateriais(form, computed(() => materialStore.materiais))
 
 const vFormRef = ref<VForm>()
 
@@ -191,13 +191,6 @@ const dialogConfirmaExclusao = ref(false)
 type AbaProduto = 'produto' | 'material'
 const abaAtiva = ref<AbaProduto>('produto')
 
-const materiaisHeaders = computed(() => [
-     { title: 'Material', key: 'nome' },
-     { title: 'Tipo', key: 'tipo_nome' },
-     { title: 'Unidade Medida', key: 'unidade_medida_sigla' },
-     { title: 'Quantidade', key: 'quantidade' },
-     { title: '', key: 'acoes', width: '1%' }
-])
 const formProdutoFotosPreview = computed(() =>
      form.value.fotos?.map((file: File) =>
           URL.createObjectURL(file)

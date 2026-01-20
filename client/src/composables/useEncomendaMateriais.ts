@@ -1,11 +1,11 @@
 import { computed, type Ref } from 'vue'
-import type { ProdutoForm } from '@/modules/produtos/produtos.types'
 import type { Material } from '@/modules/materiais/materiais.types'
 import { usarMaterialStore } from '@/stores/materiais.store'
+import type { EncomendaForm } from '@/modules/encomendas/encomendas.types'
 
 const materialStore = usarMaterialStore()
-export function useProdutoMateriais(
-     form: Ref<ProdutoForm>,
+export function useEncomendaMateriais(
+     form: Ref<EncomendaForm>,
      catalogo: Ref<Material[]>
 ) {
 
@@ -79,8 +79,8 @@ export function useProdutoMateriais(
 
      return {
           materiaisCodigos,
-          materiaisExibicao,
           materiaisHeaders,
+          materiaisExibicao,
           atualizarQuantidade,
           removerMaterial,
           selecionarMateriais

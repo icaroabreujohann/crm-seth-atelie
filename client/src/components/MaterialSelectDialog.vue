@@ -54,10 +54,10 @@ import { PackageSearchIcon, Search02Icon } from '@hugeicons/core-free-icons';
 import { substituiPontoPorVirgula } from '@/utils/substituirPontoPorVirgula';
 
 const props = withDefaults(defineProps<{
-     materiaisDoProduto: string[] | null,
+     materiaisProps: string[] | null,
      modelValue: boolean
 }>(), {
-     materiaisDoProduto: () => []
+     materiaisProps: () => []
 })
 
 const emit = defineEmits<{
@@ -118,7 +118,7 @@ watch(
      () => dialog.value,
      aberto => {
           if (aberto) {
-               materiaisSelecionados.value = new Set(props.materiaisDoProduto)
+               materiaisSelecionados.value = new Set(props.materiaisProps)
           }
      },
      { immediate: true }

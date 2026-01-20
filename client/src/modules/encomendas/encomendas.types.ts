@@ -31,6 +31,7 @@ export interface EncomendaView {
     data_pedido: Date,
     data_prazo: Date,
     data_criacao: Date,
+    materiais: EncomendaMaterialView[]
 }
 
 export interface EncomendaForm {
@@ -44,7 +45,8 @@ export interface EncomendaForm {
     entregue: boolean,
     local_entrega: string,
     data_pedido: Date,
-    data_prazo: Date
+    data_prazo: Date,
+    materiais: EncomendaMaterialCriarDTO[]
 }
 
 
@@ -102,4 +104,16 @@ export type EncomendaEditarDB = Partial<{
 export interface EncomendaMaterialCriarDTO {
     material_codigo: string
     quantidade: number
+}
+
+export interface EncomendaMaterialView {
+    id: number
+    produto_id: number
+    material_id: number
+    codigo: string
+    material_nome: string
+    material_tipo_nome: string
+    material_unidade_medida_sigla: string
+    quantidade: number
+    preco_final: number
 }
