@@ -46,8 +46,8 @@ export interface EncomendaForm {
     finalizado: boolean,
     entregue: boolean,
     local_entrega: string,
-    data_pedido: Date,
-    data_prazo: Date | null,
+    data_pedido: string,
+    data_prazo: string | null,
     materiais: EncomendaMaterialCriarDTO[]
 }
 export interface EncomendaPayload {

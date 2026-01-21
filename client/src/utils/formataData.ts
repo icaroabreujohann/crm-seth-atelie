@@ -13,13 +13,5 @@ export function formatarDataHoraBR(data: string | Date) {
 }
 
 export function formatarDataBR(isoDate: string) {
-  return new Date(isoDate).toLocaleDateString('pt-BR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric'
-  })
-}
-
-export function isoParaDate(isoDate: string): Date {
-  return new Date(isoDate)
+  return new Date(isoDate).toISOString().split('T')[0]
 }

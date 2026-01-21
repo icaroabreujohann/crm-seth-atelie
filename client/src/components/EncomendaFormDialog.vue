@@ -12,7 +12,7 @@
                               <HugeiconsIcon :size="18" :icon="CancelCircleIcon" class="mr-1" />
                               Cancelar
                          </v-btn>
-                         <v-btn class="mr-2" variant="tonal" v-if="props.encomenda" @click="">
+                         <v-btn class="mr-2" variant="tonal" v-if="props.encomenda" @click="dialogConfirmaExclusao = true">
                               <HugeiconsIcon :size="18" :icon="Delete02Icon" class="mr-1" />
                               Excluir
                          </v-btn>
@@ -127,6 +127,9 @@
           @select="selecionarMateriais" />
      <ClienteSelectDialog v-model="dialogClienteSelect" @select="selecionarCliente" />
      <ProdutoSelectDialog v-model="dialogProdutoSelect" @select="selecionarProduto" />
+     <ConfirmaExclusao v-model="dialogConfirmaExclusao" v-if="encomenda" :identificador="encomenda?.codigo" :tipo="'encomenda'" @excluir="excluir"/>
+
+
 </template>
 
 <script setup lang="ts">
@@ -140,6 +143,7 @@ import type { VForm } from 'vuetify/components';
 import type { Cliente } from '@/modules/clientes/clientes.types';
 import type { ProdutoView } from '@/modules/produtos/produtos.types';
 import MaterialSelectDialog from './MaterialSelectDialog.vue';
+import ConfirmaExclusao from './common/ConfirmaExclusao.vue';
 import { useEncomendaMateriais } from '@/composables/useEncomendaMateriais';
 import { usarMaterialStore } from '@/stores/materiais.store';
 
@@ -150,7 +154,8 @@ const props = defineProps<{
 
 const emit = defineEmits<{
      (e: 'salvar', value: Partial<EncomendaForm>): void,
-     (e: 'update:modelValue', value: boolean): void
+     (e: 'update:modelValue', value: boolean): void,
+     (e: 'excluir', value: string): void
 }>()
 
 const dialog = computed({
@@ -173,6 +178,7 @@ const { materiaisCodigos, materiaisHeaders, materiaisExibicao, atualizarQuantida
 const dialogMaterialSelect = ref(false)
 const dialogClienteSelect = ref(false)
 const dialogProdutoSelect = ref(false)
+const dialogConfirmaExclusao = ref(false)
 
 const clienteSelecionado = ref<Cliente | null>(null)
 const produtoSelecionado = ref<ProdutoView | null>(null)
@@ -193,6 +199,11 @@ async function salvar() {
      const formValido = await vFormRef.value?.validate()
      if (!formValido?.valid) return
      emit('salvar', modoEditar.value ? gerarPayloadPatch() : { ...form.value })
+}
+
+function excluir(codigo: string | number) {
+     dialogConfirmaExclusao.value = false
+     emit('excluir', String(codigo))
 }
 
 const nomeClienteExibicao = computed(() => {

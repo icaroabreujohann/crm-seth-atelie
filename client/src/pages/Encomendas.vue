@@ -45,7 +45,7 @@
           </v-col>
      </v-row>
 
-     <EncomendaFormDialog v-model="dialogEncomendaForm" :encomenda="encomendaSelecionada" @salvar="salvarEncomenda" />
+     <EncomendaFormDialog v-model="dialogEncomendaForm" :encomenda="encomendaSelecionada" @salvar="salvarEncomenda" @excluir="excluirEncomenda" />
 </template>
 
 <script setup lang="ts">
@@ -88,8 +88,8 @@ async function salvarEncomenda(encomenda: Partial<EncomendaForm>) {
      await listarEncomendas()
 }
 
-async function excluirEncomenda(codigo: string | number) {
-     await EncomendasServices.excluir(String(codigo))
+async function excluirEncomenda(codigo: string) {
+     await EncomendasServices.excluir(codigo)
      dialogEncomendaForm.value = false
      feedback.sucesso('Encomenda excluida com sucesso')
      await listarEncomendas()

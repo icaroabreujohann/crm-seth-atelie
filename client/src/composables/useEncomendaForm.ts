@@ -1,5 +1,5 @@
 import type { EncomendaForm, EncomendaView } from "@/modules/encomendas/encomendas.types";
-import { formatarDataBR, formatarDataHoraBR, isoParaDate } from "@/utils/formataData";
+import { formatarDataBR, formatarDataHoraBR } from "@/utils/formataData";
 import { montaPayloadPatch } from "@/utils/montarPayloadPatch";
 import { computed, ref } from "vue";
 
@@ -14,8 +14,8 @@ export function useEncomendaForm() {
           finalizado: false,
           entregue: false,
           local_entrega: '',
-          data_pedido: new Date(),
-          data_prazo: null,
+          data_pedido: '',
+          data_prazo: '',
           materiais: []
      }
 
@@ -42,8 +42,8 @@ export function useEncomendaForm() {
                finalizado: encomenda.finalizado,
                entregue: encomenda.entregue,
                local_entrega: encomenda.local_entrega,
-               data_pedido: encomenda.data_pedido,
-               data_prazo: encomenda.data_prazo,
+               data_pedido: String(encomenda.data_pedido),
+               data_prazo: String(encomenda.data_prazo),
                materiais: encomenda.materiais.map(m => ({
                     material_codigo: m.codigo,
                     quantidade: Number(m.quantidade)
@@ -51,7 +51,6 @@ export function useEncomendaForm() {
           }
           form.value = structuredClone(base)
           original.value = structuredClone(base)
-          console.log(form.value)
      }
 
      const podeSalvar = computed(
