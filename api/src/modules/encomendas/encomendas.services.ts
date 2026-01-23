@@ -54,14 +54,13 @@ export class EncomendasServices {
      async listarPorCodigo(codigo: string) {
           const encomenda = await this.repository.listarPorCodigo(codigo)
           assertResultadoExiste(encomenda, CODIGOS_ERRO.ENCOMENDA_N_EXISTE_ERR, codigo)
-
           return encomenda.data
      }
-
+     
      async listarCompleto(codigo: string) {
           const encomenda = await this.repository.listarPorCodigo(codigo)
           assertResultadoExiste(encomenda, CODIGOS_ERRO.ENCOMENDA_N_EXISTE_ERR, codigo)
-
+          
           const materiais = await this.repositoryMateriais.listarMaterialPorEncomenda(encomenda.data.id)
           const materiaisMapeados = materiais?.data ?? []
 
@@ -110,6 +109,8 @@ export class EncomendasServices {
                this.excluirMateriaisDaEncomenda(encomendaExiste.data.id)
                this.inserirMateriaisDaEncomenda(encomendaExiste.data.id, data.materiais)
           }
+
+          console.log('encomenda', encomendaMap)
 
           return encomendaEditada
      }

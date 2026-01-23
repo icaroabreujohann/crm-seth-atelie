@@ -60,10 +60,16 @@
                                         <v-text-field type="date" variant="solo-filled" v-model="form.data_pedido"
                                              :rules="regras.obrigatorio"></v-text-field>
                                    </v-col>
-                                   <v-col cols="6">
-                                        <p>Data da Entrega</p>
-                                        <v-text-field type="date" variant="solo-filled"
-                                             v-model="form.data_prazo"></v-text-field>
+                                   <v-col cols="3">
+                                        <p>Data de Prazo</p>
+                                        <v-text-field type="date" variant="solo-filled" v-model="form.data_prazo"
+                                             :disabled="encomendaSemPrazo"></v-text-field>
+                                   </v-col>
+                                   <v-col cols="3" class="d-flex align-center">
+                                        <v-checkbox color="main" density="compact" hide-details
+                                             v-model="encomendaSemPrazo">
+                                             <template #label>Sem Prazo</template>
+                                        </v-checkbox>
                                    </v-col>
                               </v-row>
                               <v-row>
@@ -192,6 +198,7 @@ const dialogConfirmaExclusao = ref(false)
 
 const clienteSelecionado = ref<Cliente | null>(null)
 const produtoSelecionado = ref<ProdutoView | null>(null)
+const encomendaSemPrazo = ref(true)
 
 function selecionarCliente(cliente: Cliente) {
      clienteSelecionado.value = cliente
@@ -234,7 +241,11 @@ const nomeProdutoExibicao = computed(() => {
 
 watch(
      () => props.encomenda,
-     (encomenda) => carregar(encomenda ?? undefined),
+     (encomenda) => { 
+          carregar(encomenda ?? undefined), 
+          encomendaSemPrazo.value = !encomenda?.data_prazo 
+     },
+
      { immediate: true }
 )
 
@@ -244,6 +255,12 @@ watch(dialog, (aberto) => {
           clienteSelecionado.value = null
           produtoSelecionado.value = null
           vFormRef.value?.resetValidation()
+     }
+})
+
+watch(encomendaSemPrazo, (semPrazo) => {
+     if(semPrazo) {
+          form.value.data_prazo = null
      }
 })
 

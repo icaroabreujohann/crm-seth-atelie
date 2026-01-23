@@ -42,8 +42,8 @@ export function useEncomendaForm() {
                finalizado: encomenda.finalizado,
                entregue: encomenda.entregue,
                local_entrega: encomenda.local_entrega,
-               data_pedido: String(encomenda.data_pedido),
-               data_prazo: String(encomenda.data_prazo),
+               data_pedido: encomenda.data_pedido,
+               data_prazo: encomenda.data_prazo,
                materiais: encomenda.materiais.map(m => ({
                     material_codigo: m.codigo,
                     quantidade: Number(m.quantidade)

@@ -31,8 +31,8 @@ export interface EncomendaView {
     finalizado: boolean,
     entregue: boolean,
     local_entrega: string | null,
-    data_pedido: Date,
-    data_prazo: Date,
+    data_pedido: string,
+    data_prazo: string,
     data_alteracao: Date
 }
 
@@ -46,8 +46,8 @@ export interface EncomendaCriarDTO {
     finalizado?: boolean,
     entregue?: boolean,
     local_entrega?: string,
-    data_pedido: Date,
-    data_prazo?: Date
+    data_pedido: string,
+    data_prazo?: string | null
     materiais?: EncomendaMaterialCriarDTO[]
 }
 
@@ -58,8 +58,8 @@ export type EncomendaEditarDTO = Partial<{
     finalizado: boolean,
     entregue: boolean,
     local_entrega: string,
-    data_pedido: Date,
-    data_prazo: Date
+    data_pedido: string,
+    data_prazo: string | null
     materiais: EncomendaMaterialCriarDTO[]
 }>
 
@@ -85,5 +85,5 @@ export type EncomendaEditarDB = Partial<{
     entregue: boolean,
     local_entrega: string,
     data_pedido: Date,
-    data_prazo: Date
+    data_prazo: Date | null
 }>

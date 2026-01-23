@@ -1,20 +1,3 @@
-export interface EncomendaDB {
-    id: number,
-    cliente_id: number,
-    produto_id: number,
-    preco_final: number,
-    observacoes: string | null,
-    pagamento_realizado: boolean,
-    pagamento_forma: string | null,
-    finalizado: boolean,
-    entregue: boolean,
-    local_entrega: string | null,
-    data_pedido: string | null,
-    data_prazo: string | null,
-    data_criacao: Date,
-    data_alteracao: Date
-}
-
 export interface EncomendaView {
     codigo: string,
     cliente_id: number,
@@ -31,8 +14,8 @@ export interface EncomendaView {
     local_entrega: string,
     data_pedido: string | null,
     data_prazo: string | null,
-    data_criacao: Date,
-    data_alteracao: Date
+    data_criacao: string,
+    data_alteracao: string
     materiais: EncomendaMaterialView[]
 }
 
