@@ -52,7 +52,7 @@
                <v-card class="pa-5" @click="abrirEditar(e)" :class="e.finalizado ? 'encomendaFinalizada' : '' ">
                     <div class="d-flex">
                          <div class="mr-3">
-                              <v-img width="6vw" height="12vh" cover :key="e.produto_codigo + e.data_criacao"
+                              <v-img width="7.5vw" height="15vh" cover :key="e.produto_codigo + e.data_criacao"
                                    :src="`${api.defaults.baseURL}/arquivos/produtos/${e.produto_codigo}/1.webp?v=${Date.now()}`">
                                    <template #placeholder>
                                         <div class="d-flex align-center justify-center fill-height">
@@ -71,14 +71,25 @@
                                    <HugeiconsIcon :storke-width="16" class="text-light mr-1" :icon="UserCircleIcon" />
                                    <h2>{{ e.cliente_nome }}</h2>
                               </div>
-                              <div class="d-flex align-center">
+                              <div class="d-flex align-center mt-1">
                                    <HugeiconsIcon :storke-width="16" class="text-light mr-1" :icon="Tag01Icon" />
                                    <h2>{{ e.produto_nome }}</h2>
                               </div>
-                              <v-chip class="mt-1" style="max-width: 70%;">
+                              <!-- <v-chip class="mt-1">
                                    <HugeiconsIcon :size="16" :icon="QrCode01Icon" />
-                                   <p class="ml-2 text-ellipsis">{{ e.codigo.toUpperCase() }}</p>
-                              </v-chip>
+                                   <p class="ml-2 text-ellipsis">{{ e.data_pedido }}</p>
+                              </v-chip> -->
+                              <div class="d-flex align-center mt-4">
+                                   <div class="mx-2">
+                                        <p>Data do Pedido</p>
+                                        <h4 v-if="e.data_pedido">{{ formatarDataDDMMYYYY(e.data_pedido)}}</h4>
+                                   </div>
+                                   <div class="mx-2">
+                                        <p>Data do Prazo</p>
+                                        <h4 v-if="e.data_prazo">{{ formatarDataDDMMYYYY(e.data_prazo) }}</h4>
+                                        <h4 v-if="!e.data_prazo" class="subText">Sem Prazo</h4>
+                                   </div>
+                              </div>
                          </div>
                     </div>
                </v-card>
@@ -100,6 +111,7 @@ import EncomendaFormDialog from '@/components/EncomendaFormDialog.vue';
 import { usarFeedbackStore } from '@/stores/feedbacks.store';
 import { usarClienteStore } from '@/stores/clientes.store';
 import { usarProdutoStore } from '@/stores/produtos.store';
+import { formatarDataBR, formatarDataDDMMYYYY } from '@/utils/formataData';
 
 const feedback = usarFeedbackStore()
 const clienteStore = usarClienteStore()

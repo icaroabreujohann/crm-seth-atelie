@@ -14,7 +14,7 @@
                </v-list-item>
           </v-navigation-drawer>
           <v-main>
-               <v-container class="pa-10" width="75vw" fluid>
+               <v-container class="pa-10" width="80vw" fluid>
                     
                     <v-card class="pa-10">
                          <router-view/>
